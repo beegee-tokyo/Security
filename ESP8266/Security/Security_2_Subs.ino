@@ -35,17 +35,17 @@ void relayOff() {
 */
 void sendAlarm() {
   digitalWrite(comLED, LOW);
-  
+
   // Create broadcast message
   // structure is:
   // module_name,mac_add,detection_status,light_value
   // ESP8266,cd:60:1:7f:cf:5c,0,35600
-  
+
   String broadCast = "ESP8266," + localMac + ",";
   if (hasDetection) {
-  	broadCast += "1,";
+    broadCast += "1,";
   } else {
-  	broadCast += "0,";
+    broadCast += "0,";
   }
   broadCast += String(lightValue);
   Serial.println("Broadcast message: " + broadCast);
@@ -153,5 +153,75 @@ void triggerGetTime() {
 */
 void triggerGetLight() {
   lightUpdateTriggered = true;
+}
+
+void toggleAlarmSound() {
+  int toneLength = melody[melodyPoint];
+  analogWrite(speakerPin, 0);
+  analogWriteFreq(toneLength);
+  analogWrite(speakerPin, toneLength / 2);
+
+  melodyPoint ++;
+  if (melodyPoint == melodyLenght) {
+    melodyPoint = 0;
+    analogWrite(speakerPin, 0);
+    alarmTimer.detach();
+  }
+}
+/*
+  analogWrite(speakerPin, alarmPWM);
+  if (alarmUp) {
+  alarmPWM += 5;
+  if (alarmPWM >= 256) {
+  alarmPWM = 255;
+  alarmUp = false;
+  }
+  } else {
+  alarmPWM -= 10;
+  if (alarmPWM <= 10) {
+  alarmPWM = 10;
+  alarmUp = true;
+  }
+  }
+  }
+*/
+
+/**
+   sendLight
+   answer request on http server
+   send last measured light value to requester
+*/
+void sendLight(WiFiClient httpClient) {
+  // Wait until the client sends some data
+  while (!httpClient.available()) {
+    delay(1);
+  }
+
+  // Read the first line of the request
+  String req = httpClient.readStringUntil('\r');
+  if (req.substring(4, 8) == "/?p=") {
+    String pwmValStr = "";
+    int i = 8;
+    while (req.substring(i, i + 1) != " ") {
+      pwmValStr += req.substring(i, i + 1);
+      i++;
+    }
+    if (pwmValStr.toInt() == 0) {
+      alarmTimer.detach();
+      analogWrite(speakerPin, 0);
+    } else {
+      alarmTimer.attach_ms(pwmValStr.toInt(), toggleAlarmSound);
+    }
+  }
+  httpClient.flush();
+
+  // Prepare the response
+  String s = "HTTP / 1.1 200 OK\r\nContent - Type: text / html\r\n\r\n < !DOCTYPE HTML > \r\n<html>\r\n";
+  s += String(lightValue);
+  s += " < / html > \n";
+
+  // Send the response to the client
+  httpClient.print(s);
+  httpClient.stop();
 }
 

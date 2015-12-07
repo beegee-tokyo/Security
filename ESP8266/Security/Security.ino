@@ -29,6 +29,15 @@
 #include <Adafruit_TSL2561_U_ESP.h>
 #include <pgmspace.h>
 
+
+/* wifiAPinfo.h contains wifi SSID and password */
+/* file content looks like: */
+/* Begin of file:
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
+   End of file */
+#include "wifiAPinfo.h"
+
 #include "pitches.h"
 
 /** Red LED on GPIO0 for visual detection alarm */
@@ -43,17 +52,17 @@
 #define sdaPin 13
 /** Clock pin for I2C communication with light sensor */
 #define sclPin 12
-
-/** SSID of local WiFi network */
-const char* ssid = "Teresa&Bernd";
-/** Password for local WiFi network */
-const char* password = "teresa1963";
+/** Output to loudspeaker or piezo */
+int speakerPin = 15;
 
 /** WiFiClient class to create TCP communication */
 WiFiClient tcpClient;
 
 /** WiFiUDP class for creating UDP communication */
 WiFiUDP udpClientServer;
+
+/** WiFiServer class to create simple web server */
+WiFiServer server(80);
 
 /** IP address of this module */
 IPAddress ipAddr(192, 168, 0, 141);
@@ -79,6 +88,23 @@ Ticker relayOffTimer;
 Ticker updateHourTimer;
 /** Timer to collect light information from TSL2561 sensor */
 Ticker getLightTimer;
+/** Timer for alarm siren */
+Ticker alarmTimer;
+
+/** Cycle of alarmTimer (used to create up and down going frequency */
+int alarmPWM = 10;
+/** Flag for frequency up or down */
+boolean alarmUp = true;
+
+/** Melody as delay time */
+long melody[] = {1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1700,1700,1915,1915,1432,1432,1700,1700,1136,1136,1915,1915,1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1136,1136,1275,1275};
+//{1915, 1700, 1519, 1432, 1275, 1136, 1014, 956, 500,};
+//   c     d     e     f     g     a     b    c    p
+/** Melody position pointer */
+int melodyPoint = 0;
+int melodyLenght = 38;
+int melodyLenghtCount = 0;
+boolean melodyToneOn = true;
 
 /** Relay on delay time in seconds */
 int onTime = 30;
