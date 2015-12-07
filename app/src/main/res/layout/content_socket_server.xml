@@ -8,7 +8,7 @@
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Not connected"
+        android:text="@string/not_connected"
         android:textSize="48sp"
         android:layout_marginTop="48dp">
     </TextView>
@@ -17,7 +17,7 @@
         android:id="@+id/text5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Not connected"
+        android:text="@string/not_connected"
         android:textSize="48sp"
         >
     </TextView>
@@ -26,7 +26,7 @@
         android:id="@+id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiting..."
+        android:text="@string/not_connected"
         android:textSize="48sp">
     </TextView>
 
@@ -34,7 +34,7 @@
         android:id="@+id/text3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiting..."
+        android:text="@string/not_connected"
         android:textSize="48sp">
     </TextView>
 
@@ -42,7 +42,7 @@
         android:id="@+id/text4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Waiting..."
+        android:text="@string/not_connected"
         android:textSize="48sp">
     </TextView>
 

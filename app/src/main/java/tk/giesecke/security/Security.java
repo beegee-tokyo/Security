@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 public class Security extends AppCompatActivity {
 
-	static Handler updateConversationHandler;
+	private static Handler updateConversationHandler;
 
-	public static TextView text1;
-	public static TextView text2;
-	public static TextView text3;
-	public static TextView text4;
-	public static TextView text5;
+	private static TextView text1;
+	private static TextView text2;
+	private static TextView text3;
+	private static TextView text4;
+	private static TextView text5;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class Security extends AppCompatActivity {
 		// Register handler for UI update
 		updateConversationHandler = new Handler();
 
-		// Register the receiver for messages from UDPlistener
+		// Register the receiver for messages from UDP listener
 		if (activityReceiver != null) {
 			//Create an intent filter to listen to the broadcast sent with the action "ACTION_STRING_ACTIVITY"
 			IntentFilter intentFilter = new IntentFilter(UDPlistener.BROADCAST_RECEIVED);
@@ -58,7 +58,7 @@ public class Security extends AppCompatActivity {
 	public void onPause() {
 		super.onPause();
 		Log.d("Service", "onDestroy");
-		// Unregister the receiver for messages from UDPlistener
+		// Unregister the receiver for messages from UDP listener
 		unregisterReceiver(activityReceiver);
 	}
 
@@ -73,8 +73,8 @@ public class Security extends AppCompatActivity {
 	}
 
 	class updateUITxt implements Runnable {
-		private String msg;
-		private TextView field;
+		private final String msg;
+		private final TextView field;
 
 		public updateUITxt(String str, TextView selector) {
 			this.msg = str;
@@ -87,11 +87,11 @@ public class Security extends AppCompatActivity {
 		}
 	}
 
-	private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver activityReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			String senderIP = intent.getStringExtra("ipAdress");
+			String senderIP = intent.getStringExtra("ipAddress");
 			String[] msgSplit = intent.getStringArrayExtra("message");
 
 			Security.updateConversationHandler.post(new Security.updateUITxt(senderIP, Security.text1));
@@ -99,7 +99,7 @@ public class Security extends AppCompatActivity {
 				Security.updateConversationHandler.post(
 						new Security.updateUITxt(msgSplit[0], Security.text5)); // Module name
 				Security.updateConversationHandler.post(
-						new Security.updateUITxt(msgSplit[1], Security.text2)); // MAC addr
+						new Security.updateUITxt(msgSplit[1], Security.text2)); // MAC address
 				if (msgSplit[2].equalsIgnoreCase("0")) {
 					Security.updateConversationHandler.post(
 							new Security.updateUITxt("No detection", Security.text3)); // Detection result

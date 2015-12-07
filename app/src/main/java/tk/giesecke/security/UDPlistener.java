@@ -21,13 +21,12 @@ import java.net.InetAddress;
 
 public class UDPlistener extends Service {
 
-	public static final int UDP_SERVER_PORT = 5000;
+	private static final int UDP_SERVER_PORT = 5000;
 	public static final String BROADCAST_RECEIVED = "BC_RECEIVED";
 
-	WifiManager.MulticastLock lock = null;
-	private Boolean shouldRestartSocketListen=true;
-	DatagramSocket socket;
-	Context intentContext;
+	private final Boolean shouldRestartSocketListen=true;
+	private DatagramSocket socket;
+	private Context intentContext;
 
 	public UDPlistener() {
 	}
@@ -59,14 +58,14 @@ public class UDPlistener extends Service {
 		// Get the MulticastLock to be able to receive multicast UDP messages
 		WifiManager wifi = (WifiManager)getSystemService( Context.WIFI_SERVICE );
 		if(wifi != null){
-			lock = wifi.createMulticastLock("Log_Tag");
+			WifiManager.MulticastLock lock = wifi.createMulticastLock("Log_Tag");
 			lock.acquire();
 		}
 
 		// Keep device awake to make sure we receive the alarm message
 
 		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-		PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "whatever");
+		@SuppressWarnings("deprecation") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "whatever");
 		wl.acquire();
 
 		// Start listener for UDP broadcast messages
@@ -157,18 +156,8 @@ public class UDPlistener extends Service {
 		sendBroadcast(senderIP, msgSplit);
 	}
 
-	/* broadcastIntent to send message is not used atm
-	private void broadcastIntent(String senderIP, String message) {
-		Intent intent = new Intent(UDP_BROADCAST);
-		intent.putExtra("sender", senderIP);
-		intent.putExtra("message", message);
-		sendBroadcast(intent);
-	}
-	*/
-	Thread UDPBroadcastThread;
-
-	void startListenForUDPBroadcast() {
-		UDPBroadcastThread = new Thread(new Runnable() {
+	private void startListenForUDPBroadcast() {
+		Thread UDPBroadcastThread = new Thread(new Runnable() {
 			public void run() {
 				try {
 					InetAddress broadcastIP = InetAddress.getByName("192.168.0.255"); //172.16.238.42 //192.168.1.255
@@ -192,7 +181,7 @@ public class UDPlistener extends Service {
 	private void sendBroadcast(String ipAddress, String[] msgSplit) {
 		Intent broadCastIntent = new Intent();
 		broadCastIntent.setAction(BROADCAST_RECEIVED);
-		broadCastIntent.putExtra("ipAdress", ipAddress);
+		broadCastIntent.putExtra("ipAddress", ipAddress);
 		broadCastIntent.putExtra("message", msgSplit);
 		sendBroadcast(broadCastIntent);
 	}

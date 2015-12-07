@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Security</string>
-    <string name="action_settings">Settings</string>
+    <string name="not_connected">Waiting for connection</string>
 </resources>
