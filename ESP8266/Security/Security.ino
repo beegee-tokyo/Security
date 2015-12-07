@@ -11,6 +11,7 @@
  * Relay to switch on external light.
  * Light on time 30 seconds, extended if PIR sensor is retriggered
  * Light on only between 5pm and 7am (time info from Arduino Yun running 24h to monitor my solar panels)
+ * Playing an alarm sound if enabled
  * Collecting light values for
  * - Light on decision (not implemented yet, will replace time driven light on decsion)
  * - Light information made available for solar panel monitor (not implemented yet)
@@ -97,13 +98,22 @@ int alarmPWM = 10;
 boolean alarmUp = true;
 
 /** Melody as delay time */
-long melody[] = {1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1700,1700,1915,1915,1432,1432,1700,1700,1136,1136,1915,1915,1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1136,1136,1275,1275};
-//{1915, 1700, 1519, 1432, 1275, 1136, 1014, 956, 500,};
-//   c     d     e     f     g     a     b    c    p
+//long melody[] = {1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1700,1700,1915,1915,1432,1432,1700,1700,1136,1136,1915,1915,1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1136,1136,1275,1275,1275,1275};
+long melody[] = {1915,1915,1915,1915,1275,1275,1275,1275,1915,1915,1915,1915,1275,1275,1275,1275,1915,1915,1915,1915,1275,1275,1275,1275,1915,1915,1915,1915,1275,1275,1275,1275,1915,1915,1915,1915,1275,1275,1275,1275};
+
+/** Relation between values and notes */
+//{1915, 1700, 1519, 1432, 1275, 1136, 1014, 956};
+//   c     d     e     f     g     a     b    c 
+
 /** Melody position pointer */
 int melodyPoint = 0;
-int melodyLenght = 38;
+/** Number of melody[] notes */
+int melodyLenght = 40;
+/** Index to melody[], used in playAlarmSound */
 int melodyLenghtCount = 0;
+/** Time to play a single tune in milliseconds */
+int melodyTuneTime = 175;
+/** Flag if melody is playing */
 boolean melodyToneOn = true;
 
 /** Relay on delay time in seconds */

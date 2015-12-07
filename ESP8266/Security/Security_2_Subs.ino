@@ -18,13 +18,17 @@ void ledFlash() {
 /**
    relayOff
    called by relayOffTimer
-   counts up until offDelay reaches onTime, then switch off the relay
+   counts up until offDelay reaches onTime, then 
+   switch off the relay
+   turn off the alarm sound
 */
 void relayOff() {
   offDelay += 1;
   if (offDelay == onTime) {
     digitalWrite(relayPort, LOW);
     relayOffTimer.detach();
+    alarmTimer.detach();
+    analogWrite(speakerPin, 0);
   }
 }
 
@@ -64,11 +68,27 @@ void sendAlarm() {
 }
 
 /**
+   toggleAlarmSound
+   plays the tune defined with melody[] endless until ticker is detached
+*/
+void playAlarmSound() {
+  int toneLength = melody[melodyPoint];
+  analogWriteFreq(toneLength / 2);
+  analogWrite(speakerPin, toneLength / 4);
+
+  melodyPoint ++;
+  if (melodyPoint == melodyLenght) {
+    melodyPoint = 0;
+  }
+}
+
+/**
    pirTrigger
    interrupt routine called if status of PIR detection status changes
    if there is a detection
    - the detection led starts to flash
    - the relay is switched on (if flag switchLights is true)
+   - alarm sound is played (if flag switchLights is true)
    - msgText is set to detection message
    - flag pirTriggered is set true for handling in loop()
    if detection is finished
@@ -84,6 +104,7 @@ void pirTrigger() {
     if (switchLights) {
       offDelay = 0;
       relayOffTimer.attach(1, relayOff);
+      alarmTimer.attach_ms(melodyTuneTime, playAlarmSound);
       digitalWrite(relayPort, HIGH);
     } else {
       digitalWrite(relayPort, LOW);
@@ -155,37 +176,6 @@ void triggerGetLight() {
   lightUpdateTriggered = true;
 }
 
-void toggleAlarmSound() {
-  int toneLength = melody[melodyPoint];
-  analogWrite(speakerPin, 0);
-  analogWriteFreq(toneLength);
-  analogWrite(speakerPin, toneLength / 2);
-
-  melodyPoint ++;
-  if (melodyPoint == melodyLenght) {
-    melodyPoint = 0;
-    analogWrite(speakerPin, 0);
-    alarmTimer.detach();
-  }
-}
-/*
-  analogWrite(speakerPin, alarmPWM);
-  if (alarmUp) {
-  alarmPWM += 5;
-  if (alarmPWM >= 256) {
-  alarmPWM = 255;
-  alarmUp = false;
-  }
-  } else {
-  alarmPWM -= 10;
-  if (alarmPWM <= 10) {
-  alarmPWM = 10;
-  alarmUp = true;
-  }
-  }
-  }
-*/
-
 /**
    sendLight
    answer request on http server
@@ -199,20 +189,20 @@ void sendLight(WiFiClient httpClient) {
 
   // Read the first line of the request
   String req = httpClient.readStringUntil('\r');
-  if (req.substring(4, 8) == "/?p=") {
-    String pwmValStr = "";
-    int i = 8;
-    while (req.substring(i, i + 1) != " ") {
-      pwmValStr += req.substring(i, i + 1);
-      i++;
-    }
-    if (pwmValStr.toInt() == 0) {
-      alarmTimer.detach();
-      analogWrite(speakerPin, 0);
-    } else {
-      alarmTimer.attach_ms(pwmValStr.toInt(), toggleAlarmSound);
-    }
-  }
+//  if (req.substring(4, 8) == "/?p=") {
+//    String pwmValStr = "";
+//    int i = 8;
+//    while (req.substring(i, i + 1) != " ") {
+//      pwmValStr += req.substring(i, i + 1);
+//      i++;
+//    }
+//    if (pwmValStr.toInt() == 0) {
+//      alarmTimer.detach();
+//      analogWrite(speakerPin, 0);
+//    } else {
+//      alarmTimer.attach_ms(pwmValStr.toInt(), toggleAlarmSound);
+//    }
+//  }
   httpClient.flush();
 
   // Prepare the response
