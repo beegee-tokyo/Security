@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module moduleId="BG_TSL2561_42e7024b64dd29efaa35f8c87ab56511_4" referenceFile="generic_sip_7_300mil.fzp">
+ <version>4</version>
+ <author>BeeGee</author>
+ <title>Adafruit TSL2561</title>
+ <label>U</label>
+ <date>Fri Dec 11 2015</date>
+ <tags>
+  <tag>SIP</tag>
+  <tag>fritzing core</tag>
+ </tags>
+ <properties>
+  <property name="family">Sensor</property>
+  <property name="variant">variant 1</property>
+  <property name="package">SIP (Single Inline) [THT]</property>
+  <property name="chip label">IC</property>
+  <property name="editable pin labels">false</property>
+  <property name="hole size"></property>
+  <property name="part number"></property>
+  <property name="pins">7</property>
+  <property name="layer"></property>
+  <property name="pin spacing">300mil</property>
+ </properties>
+ <taxonomy>part.sip.7.pins</taxonomy>
+ <description>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">Adafruit TSL2561 Digital Luminosity/Lux/Light Sensor Breakout&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;br />&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">The TSL2561 luminosity sensor is an advanced digital light sensor, ideal for use in a wide range of light situations. Compared to low cost CdS cells, this sensor is more precise, allowing for exact lux calculations and can be configured for different gain/timing ranges to detect light ranges from up to 0.1 - 40,000+ Lux on the fly. The best part of this sensor is that it contains both infrared and full spectrum diodes! That means you can separately measure infrared, full-spectrum or human-visible light. Most sensors can only detect one or the other, which does not accurately represent what human eyes see (since we cannot perceive the IR light that is detected by most photo diodes)&lt;/p>
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;br />&lt;/p>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">New! As of June 3, 2014 we are shipping a version with a 3.3V regulator and level shifting circuitry so it can be used with any 3-5V power/logic microcontroller.&lt;/p>&lt;/body>&lt;/html></description>
+ <views>
+  <iconView>
+   <layers image="icon/BG_TSL2561_064c359d6aa0e64d43307c59fa1ac064_1_icon.svg">
+    <layer layerId="icon"/>
+   </layers>
+  </iconView>
+  <breadboardView>
+   <layers image="breadboard/BG_TSL2561_064c359d6aa0e64d43307c59fa1ac064_1_breadboard.svg">
+    <layer layerId="breadboard"/>
+   </layers>
+  </breadboardView>
+  <schematicView>
+   <layers image="schematic/BG_TSL2561_064c359d6aa0e64d43307c59fa1ac064_1_schematic.svg">
+    <layer layerId="schematic"/>
+   </layers>
+  </schematicView>
+  <pcbView>
+   <layers image="pcb/BG_TSL2561_064c359d6aa0e64d43307c59fa1ac064_1_pcb.svg">
+    <layer layerId="silkscreen"/>
+    <layer layerId="copper0"/>
+    <layer layerId="copper1"/>
+   </layers>
+  </pcbView>
+ </views>
+ <connectors>
+  <connector id="connector0" type="male" name="Vin">
+   <description>VCC supports 3.3V to 5V</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector0pin" terminalId="connector0terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector0pin" terminalId="connector0terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector0pin" layer="copper0"/>
+     <p svgId="connector0pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector1" type="male" name="GND">
+   <description>GND</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector1pin" terminalId="connector1terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector1pin" terminalId="connector1terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector1pin" layer="copper0"/>
+     <p svgId="connector1pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector2" type="male" name="3vo">
+   <description>3.3V output</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector2pin" terminalId="connector2terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector2pin" terminalId="connector2terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector2pin" layer="copper0"/>
+     <p svgId="connector2pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector3" type="male" name="Addr">
+   <description>Address selector -> Open = 0x39, GND = 0x29, Vin = 0x49</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector3pin" terminalId="connector3terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector3pin" terminalId="connector3terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector3pin" layer="copper0"/>
+     <p svgId="connector3pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector4" type="male" name="Int">
+   <description>Interrupt signal</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector4pin" terminalId="connector4terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector4pin" terminalId="connector4terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector4pin" layer="copper0"/>
+     <p svgId="connector4pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector5" type="male" name="SDA">
+   <description>Serial data pin</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector5pin" terminalId="connector5terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector5pin" terminalId="connector5terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector5pin" layer="copper0"/>
+     <p svgId="connector5pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector id="connector6" type="male" name="SCL">
+   <description>Serial clock pin</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector6pin" terminalId="connector6terminal" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector6pin" terminalId="connector6terminal" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector6pin" layer="copper0"/>
+     <p svgId="connector6pin" layer="copper1"/>
+    </pcbView>
+   </views>
+  </connector>
+ </connectors>
+ <url>https://www.adafruit.com/product/439</url>
+</module>

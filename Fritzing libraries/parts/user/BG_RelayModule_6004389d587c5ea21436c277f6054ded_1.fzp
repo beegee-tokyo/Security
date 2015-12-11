@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module moduleId="BG_RelayModule_6004389d587c5ea21436c277f6054ded_1" referenceFile="RelayModule_DFR0017__cc65612b453176597bfa319bc55b94a2.fzp" fritzingVersion="0.7.1b.03.10.5908">
+ <author>DFRobot - BeeGee</author>
+ <title>RelayModule DFR0017 V3.1</title>
+ <label>RelayModule DFR0017 V3.1</label>
+ <date>Thu Dec 10 2015</date>
+ <tags/>
+ <properties>
+  <property name="family"></property>
+  <property name="part number"></property>
+  <property name="layer"></property>
+  <property name="variant">variant 1</property>
+ </properties>
+ <views>
+  <iconView>
+   <layers image="icon/BG_RelayModule_6004389d587c5ea21436c277f6054ded_1_icon.svg">
+    <layer layerId="icon"/>
+   </layers>
+  </iconView>
+  <breadboardView>
+   <layers image="breadboard/BG_RelayModule_6004389d587c5ea21436c277f6054ded_1_breadboard.svg">
+    <layer layerId="breadboard"/>
+   </layers>
+  </breadboardView>
+  <schematicView>
+   <layers image="schematic/BG_RelayModule_6004389d587c5ea21436c277f6054ded_1_schematic.svg">
+    <layer layerId="schematic"/>
+   </layers>
+  </schematicView>
+  <pcbView>
+   <layers image="pcb/BG_RelayModule_6004389d587c5ea21436c277f6054ded_1_pcb.svg">
+    <layer layerId="copper0"/>
+    <layer layerId="copper1"/>
+   </layers>
+  </pcbView>
+ </views>
+ <connectors>
+  <connector type="male" id="connector5" name="GND">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector5" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector5" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector5" layer="copper1"/>
+     <p svgId="connector5" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" id="connector4" name="5V">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector4" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector4" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector4" layer="copper1"/>
+     <p svgId="connector4" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="male" id="connector3" name="SIGNAL">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector3" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector3" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector3" layer="copper1"/>
+     <p svgId="connector3" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" id="connector0" name="N.O.">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector0" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector0" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector0" layer="copper1"/>
+     <p svgId="connector0" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" id="connector1" name="N.C.">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector1" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector1" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector1" layer="copper1"/>
+     <p svgId="connector1" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+  <connector type="female" id="connector2" name="COM">
+   <description>no description yet</description>
+   <views>
+    <breadboardView>
+     <p svgId="connector2" layer="breadboard"/>
+    </breadboardView>
+    <schematicView>
+     <p svgId="connector2" layer="schematic"/>
+    </schematicView>
+    <pcbView>
+     <p svgId="connector2" layer="copper1"/>
+     <p svgId="connector2" layer="copper0"/>
+    </pcbView>
+   </views>
+  </connector>
+ </connectors>
+</module>

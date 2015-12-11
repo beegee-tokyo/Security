@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="2.04444in" version="1.2" id="svg2"  viewBox="0 0 147.2 137.6" height="1.91111in" x="0in" y="0in" gorn="0">
+    <desc >
+        <referenceFile >TSL2561_ICON.svg</referenceFile>
+    </desc>
+    <metadata id="metadata8" >
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+            <cc:Work xmlns:cc="http://creativecommons.org/ns#" rdf:about="" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"/>
+            </cc:Work>
+        </rdf:RDF>
+    </metadata>
+    <defs id="defs6" />
+    <rect width="147.37007" id="rect4157" fill="#0000ff"  stroke="#ff0000" height="136.93857" style="stroke-miterlimit:4;stroke-dasharray:none;" x="-0.092480592" stroke-opacity="0.94117647" y="0.61361426" stroke-width="0" gorn="0.3"/>
+    <rect width="16.237343" id="rect4167" fill="#d4aa00"  stroke="#d4aa00" height="16.440218" style="stroke-miterlimit:4;stroke-dasharray:none;" x="5.9438767" stroke-opacity="0.94117647" y="107.82038" stroke-width="0" gorn="0.4"/>
+    <ellipse id="path4169-0-4-5-8-3" fill="#d4aa00"  cx="135.14674" cy="116.78777" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.5"/>
+    <ellipse id="path4169" fill="#d4aa00"  cx="34.243244" cy="115.72022" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.6"/>
+    <ellipse id="path4169-0" fill="#d4aa00"  cx="54.423943" cy="115.93373" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.7"/>
+    <ellipse id="path4169-0-4" fill="#d4aa00"  cx="74.836601" cy="115.93373" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.8"/>
+    <ellipse id="path4169-0-4-5" fill="#d4aa00"  cx="94.785347" cy="116.14723" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.9"/>
+    <ellipse id="path4169-0-4-5-8" fill="#d4aa00"  cx="114.96604" cy="115.93373" stroke="#d4aa00" rx="7.1908231" ry="6.8322988" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.10"/>
+    <g  transform="scale(1.0423175,0.95940052)">
+        <g >
+            <g >
+                <g fill-opacity="1" id="text4149" font-size="12.9268" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.11.0.0.0">
+                    <text id="tspan4151"  x="35.523525" y="18.246733" gorn="0.11.0.0.0.0">TSL2561</text>
+                </g>
+            </g>
+        </g>
+    </g>
+    <g  transform="scale(1.0423175,0.95940052)">
+        <g >
+            <g >
+                <g fill-opacity="1" id="text4153" font-size="8.61789" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.12.0.0.0">
+                    <text id="tspan4155"  x="39.974415" y="31.376856" gorn="0.12.0.0.0.0">Lux Sensor</text>
+                </g>
+            </g>
+        </g>
+    </g>
+    <g  transform="scale(1.0423175,0.95940052)">
+        <g >
+            <g >
+                <g fill-opacity="1" id="text4159" font-size="8.61789" fill="#f9f9f9"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.13.0.0.0">
+                    <text id="tspan4161"  x="2.5869396" y="110.15762" gorn="0.13.0.0.0.0">Vin</text>
+                </g>
+            </g>
+        </g>
+    </g>
+    <g  transform="scale(1.0423175,0.95940052)">
+        <g >
+            <g >
+                <g fill-opacity="1" id="text4163" font-size="8.61789" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.14.0.0.0">
+                    <text id="tspan4165"  x="19.945412" y="138.86586" gorn="0.14.0.0.0.0">GND</text>
+                </g>
+            </g>
+        </g>
+    </g>
+    <ellipse id="path4246" fill="#d4aa00"  cx="19.397678" cy="21.455841" stroke="#d4aa00" rx="14.149685" ry="13.344333" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.15"/>
+    <ellipse id="path4246-3" fill="#d4aa00"  cx="130.73946" cy="21.349089" stroke="#d4aa00" rx="14.149685" ry="13.344333" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.16"/>
+    <ellipse id="path4263" fill="#000000"  cx="19.397678" cy="21.349094" stroke="#d4aa00" rx="7.8867097" ry="7.2593174" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.17"/>
+    <ellipse id="path4263-8" fill="#000000"  cx="131.20338" cy="22.203127" stroke="#d4aa00" rx="7.8867097" ry="7.2593174" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.18"/>
+    <rect width="7.8867097" id="rect4282" fill="#c87137"  stroke="#d4aa00" height="9.8214293" style="stroke-miterlimit:4;stroke-dasharray:none;" x="19.629635" stroke-opacity="0.94117647" y="43.127048" stroke-width="0" gorn="0.19"/>
+    <rect width="7.8867097" id="rect4282-2" fill="#c87137"  stroke="#d4aa00" height="9.8214293" style="stroke-miterlimit:4;stroke-dasharray:none;" x="23.674204" stroke-opacity="0.94117647" y="88.380165" stroke-width="0" gorn="0.20"/>
+    <rect width="12.062026" id="rect4299" fill="#000000"  stroke="#d4aa00" height="23.272518" style="stroke-miterlimit:4;stroke-dasharray:none;" x="21.253368" stroke-opacity="0.94117647" y="57.645679" stroke-width="0" gorn="0.21"/>
+    <rect width="23.892088" id="rect4301" fill="#000000"  stroke="#d4aa00" height="10.461957" style="stroke-miterlimit:4;stroke-dasharray:none;" x="66.254013" stroke-opacity="0.94117647" y="48.251266" stroke-width="0" gorn="0.22"/>
+    <rect width="9.0465193" id="rect4303" fill="#000000"  stroke="#d4aa00" height="11.743013" style="stroke-miterlimit:4;stroke-dasharray:none;" x="51.176468" stroke-opacity="0.94117647" y="51.453903" stroke-width="0" gorn="0.23"/>
+    <rect width="8.814558" id="rect4305" fill="#000000"  stroke="#d4aa00" height="12.170032" style="stroke-miterlimit:4;stroke-dasharray:none;" x="99.424599" stroke-opacity="0.94117647" y="47.18372" stroke-width="0" gorn="0.24"/>
+    <rect width="11.134178" id="rect4307" fill="#000000"  stroke="#d4aa00" height="8.5403728" style="stroke-miterlimit:4;stroke-dasharray:none;" x="122.38882" stroke-opacity="0.94117647" y="51.02689" stroke-width="0" gorn="0.25"/>
+    <rect width="9.0465193" id="rect4309" fill="#000000"  stroke="#d4aa00" height="11.956523" style="stroke-miterlimit:4;stroke-dasharray:none;" x="99.192619" stroke-opacity="0.94117647" y="76.220993" stroke-width="0" gorn="0.26"/>
+    <rect width="9.0465193" id="rect4311" fill="#000000"  stroke="#d4aa00" height="24.340063" style="stroke-miterlimit:4;stroke-dasharray:none;" x="124.47648" stroke-opacity="0.94117647" y="68.748161" stroke-width="0" gorn="0.27"/>
+    <rect width="9.7424049" id="rect4313" fill="#ac9d93"  stroke="#d4aa00" height="15.586182" style="stroke-miterlimit:4;stroke-dasharray:none;" x="69.269524" stroke-opacity="0.94117647" y="72.591331" stroke-width="0" gorn="0.28"/>
+    <rect width="8.3506336" id="rect4315" fill="#cccccc"  stroke="#d4aa00" height="9.3944111" style="stroke-miterlimit:4;stroke-dasharray:none;" x="11.279009" stroke-opacity="0.94117647" y="43.340557" stroke-width="0" gorn="0.29"/>
+    <rect width="8.3506336" id="rect4317" fill="#cccccc"  stroke="#d4aa00" height="10.248447" style="stroke-miterlimit:4;stroke-dasharray:none;" x="27.284382" stroke-opacity="0.94117647" y="42.91354" stroke-width="0" gorn="0.30"/>
+    <rect width="8.814558" id="rect4319" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="12.438815" stroke-opacity="0.94117647" y="58.926739" stroke-width="0" gorn="0.31"/>
+    <rect width="8.814558" id="rect4319-0" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="33.18465" stroke-opacity="0.94117647" y="59.02264" stroke-width="0" gorn="0.32"/>
+    <rect width="8.814558" id="rect4319-0-2" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="12.670772" stroke-opacity="0.94117647" y="67.146843" stroke-width="0" gorn="0.33"/>
+    <rect width="8.814558" id="rect4319-0-2-2" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="12.438815" stroke-opacity="0.94117647" y="74.833183" stroke-width="0" gorn="0.34"/>
+    <rect width="8.814558" id="rect4319-0-2-2-5" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="33.315395" stroke-opacity="0.94117647" y="74.833183" stroke-width="0" gorn="0.35"/>
+    <rect width="8.814558" id="rect4319-0-2-2-5-0" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="115.66193" stroke-opacity="0.94117647" y="69.922455" stroke-width="0" gorn="0.36"/>
+    <rect width="8.814558" id="rect4319-0-2-2-5-0-0" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="115.66193" stroke-opacity="0.94117647" y="85.081635" stroke-width="0" gorn="0.37"/>
+    <rect width="8.814558" id="rect4319-0-2-2-5-0-0-7" fill="#cccccc"  stroke="#d4aa00" height="6.1917706" style="stroke-miterlimit:4;stroke-dasharray:none;" x="133.52299" stroke-opacity="0.94117647" y="77.181786" stroke-width="0" gorn="0.38"/>
+    <rect width="8.3506336" id="rect4315-7" fill="#cccccc"  stroke="#d4aa00" height="9.3944111" style="stroke-miterlimit:4;stroke-dasharray:none;" x="14.990396" stroke-opacity="0.94117647" y="88.391029" stroke-width="0" gorn="0.39"/>
+    <rect width="8.3506336" id="rect4315-7-7" fill="#cccccc"  stroke="#d4aa00" height="9.3944111" style="stroke-miterlimit:4;stroke-dasharray:none;" x="31.227739" stroke-opacity="0.94117647" y="87.964012" stroke-width="0" gorn="0.40"/>
+    <rect width="8.3506336" id="rect4315-7-7-6" fill="#cccccc"  stroke="#d4aa00" height="9.3944111" style="stroke-miterlimit:4;stroke-dasharray:none;" x="113.80624" stroke-opacity="0.94117647" y="50.599869" stroke-width="0" gorn="0.41"/>
+    <rect width="8.3506336" id="rect4315-7-7-6-4" fill="#cccccc"  stroke="#d4aa00" height="9.3944111" style="stroke-miterlimit:4;stroke-dasharray:none;" x="133.29105" stroke-opacity="0.94117647" y="50.38636" stroke-width="0" gorn="0.42"/>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.6863365" id="rect4315-7-7-6-4-8" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="39.497383" stroke-opacity="0.94117647" y="-108.93503" stroke-width="0" gorn="0.43.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.686337" id="rect4315-7-7-6-4-8-4" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="58.926739" stroke-opacity="0.94117647" y="-108.93503" stroke-width="0" gorn="0.44.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.686337" id="rect4315-7-7-6-4-8-4-8" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="68.534653" stroke-opacity="0.94117647" y="-108.93505" stroke-width="0" gorn="0.45.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.686337" id="rect4315-7-7-6-4-8-4-8-8" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="87.536987" stroke-opacity="0.94117647" y="-108.93505" stroke-width="0" gorn="0.46.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.686337" id="rect4315-7-7-6-4-8-4-8-8-2" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="43.981083" stroke-opacity="0.94117647" y="-60.686916" stroke-width="0" gorn="0.47.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="7.686337" id="rect4315-7-7-6-4-8-4-8-8-2-1" fill="#cccccc"  stroke="#d4aa00" height="10.20633" style="stroke-miterlimit:4;stroke-dasharray:none;" x="62.556393" stroke-opacity="0.94117647" y="-60.686916" stroke-width="0" gorn="0.48.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="8.1133547" id="rect4319-0-5" fill="#cccccc"  stroke="#d4aa00" height="6.7268991" style="stroke-miterlimit:4;stroke-dasharray:none;" x="40.351421" stroke-opacity="0.94117647" y="-81.215561" stroke-width="0" gorn="0.49.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="8.1133547" id="rect4319-0-5-8" fill="#cccccc"  stroke="#d4aa00" height="6.7268991" style="stroke-miterlimit:4;stroke-dasharray:none;" x="58.286209" stroke-opacity="0.94117647" y="-73.560806" stroke-width="0" gorn="0.50.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <g  transform="matrix(0,1,-1,0,0,0)">
+        <g >
+            <g >
+                <rect width="8.1133547" id="rect4319-0-5-8-0" fill="#cccccc"  stroke="#d4aa00" height="6.7268991" style="stroke-miterlimit:4;stroke-dasharray:none;" x="58.286209" stroke-opacity="0.94117647" y="-88.870293" stroke-width="0" gorn="0.51.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <rect width="6.0310225" id="rect4319-0-4" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="63.006531" stroke-opacity="0.94117647" y="72.698082" stroke-width="0" gorn="0.52"/>
+    <rect width="6.0310225" id="rect4319-0-4-1" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="78.547997" stroke-opacity="0.94117647" y="72.591331" stroke-width="0" gorn="0.53"/>
+    <rect width="6.0310225" id="rect4319-0-4-1-6" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="63.006531" stroke-opacity="0.94117647" y="77.929062" stroke-width="0" gorn="0.54"/>
+    <rect width="6.0310225" id="rect4319-0-4-1-6-2" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="78.779953" stroke-opacity="0.94117647" y="78.356079" stroke-width="0" gorn="0.55"/>
+    <rect width="6.0310225" id="rect4319-0-4-1-6-2-0" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="63.006531" stroke-opacity="0.94117647" y="83.480301" stroke-width="0" gorn="0.56"/>
+    <rect width="6.0310225" id="rect4319-0-4-1-6-2-0-8" fill="#cccccc"  stroke="#d4aa00" height="4.270196" style="stroke-miterlimit:4;stroke-dasharray:none;" x="79.243874" stroke-opacity="0.94117647" y="83.907318" stroke-width="0" gorn="0.57"/>
+    <g  transform="matrix(2.9510246,0,0,2.6798733,5.9129423,71.690604)">
+        <g >
+            <g >
+                <path id="path4713" fill="#ffffff"  stroke="#d4aa00" d="m 24.565542,13.561564 -1.537021,-1.750413 -2.31331,0.273825 1.189776,-2.002702 -0.975275,-2.1154719 2.272344,0.5126759 1.710556,-1.5812589 0.21461,2.319553 2.032457,1.1381999 -2.139708,0.920887 z" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.58.0.0.0"/>
+            </g>
+        </g>
+    </g>
+    <ellipse id="path5494" fill="#000000"  cx="33.940376" cy="115.66185" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.59"/>
+    <ellipse id="path5494-1" fill="#000000"  cx="13.379393" cy="115.76022" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.60"/>
+    <ellipse id="path5494-1-6" fill="#000000"  cx="54.50135" cy="115.95697" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.61"/>
+    <ellipse id="path5494-1-6-9" fill="#000000"  cx="74.767197" cy="115.76022" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.62"/>
+    <ellipse id="path5494-1-6-9-7" fill="#000000"  cx="94.836288" cy="115.95698" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.63"/>
+    <ellipse id="path5494-1-6-9-7-8" fill="#000000"  cx="115.10213" cy="115.95698" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.64"/>
+    <ellipse id="path5494-1-6-9-7-8-2" fill="#000000"  cx="135.36798" cy="116.744" stroke="#d4aa00" rx="4.2302494" ry="4.4270058" style="stroke-miterlimit:4;stroke-dasharray:none;" stroke-opacity="0.94117647" stroke-width="0" gorn="0.65"/>
+    <g fill-opacity="1" id="text4159-9" font-size="3.20001" fill="#f9f9f9"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.66">
+        <text id="tspan4161-7"  x="48.120384" y="-13.811253" gorn="0.66.0">Vin</text>
+    </g>
+    <g fill-opacity="1" id="text4163-5" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.67">
+        <text id="tspan4165-0"  x="54.565971" y="-3.1512425" gorn="0.67.0">GND</text>
+    </g>
+    <g fill-opacity="1" id="text5592" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.68">
+        <text id="tspan5594"  x="62.985394" y="-13.789463" gorn="0.68.0">3vo</text>
+    </g>
+    <g fill-opacity="1" id="text5596" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.69">
+        <text id="tspan5598"  x="78.708778" y="-13.789465" gorn="0.69.0">Int</text>
+    </g>
+    <g fill-opacity="1" id="text5600" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.70">
+        <text id="tspan5602"  x="91.633934" y="-13.922714" gorn="0.70.0">SCL</text>
+    </g>
+    <g fill-opacity="1" id="text5604" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.71">
+        <text id="tspan5606"  x="68.931313" y="-3.4345658" gorn="0.71.0">Addr</text>
+    </g>
+    <g fill-opacity="1" id="text5608" font-size="3.20001" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.72">
+        <text id="tspan5610"  x="84.646858" y="-3.1025488" gorn="0.72.0">SDA</text>
+    </g>
+    <g fill-opacity="1" id="text5666" font-size="8.00003" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.73">
+        <text id="tspan5668"  x="45.844101" y="105.92242" gorn="0.73.0">3vo</text>
+    </g>
+    <g fill-opacity="1" id="text5670" font-size="8.00003" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.74">
+        <text id="tspan5672"  x="89.523888" y="105.52892" gorn="0.74.0">Int</text>
+    </g>
+    <g fill-opacity="1" id="text5674" font-size="8.00003" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.75">
+        <text id="tspan5676"  x="126.51397" y="105.72567" gorn="0.75.0">SCL</text>
+    </g>
+    <g fill-opacity="1" id="text5678" font-size="8.00003" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.76">
+        <text id="tspan5680"  x="60.010517" y="133.07474" gorn="0.76.0">Addr</text>
+    </g>
+    <g fill-opacity="1" id="text5682" font-size="8.00003" fill="#ffffff"  xml:space="preserve" stroke="none" xmlns:xml="http://www.w3.org/XML/1998/namespace" style="font-style:normal;font-weight:normal;line-height:125%;font-family:Droid Sans;letter-spacing:0px;word-spacing:0px;stroke-linecap:butt;stroke-linejoin:miter;" stroke-opacity="1" stroke-width="0.800002" gorn="0.77">
+        <text id="tspan5684"  x="105.0676" y="132.48447" gorn="0.77.0">SDA</text>
+    </g>
+</svg>

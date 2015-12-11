@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Fritzing (http://www.fritzing.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" width="0.14in" version="1.2" baseProfile="tiny"  viewBox="0 0 140 740" height="0.74in" x="0in" y="0in">
+    <desc >
+        <referenceFile >jumper_7_100mil_pcb.svg</referenceFile>
+    </desc>
+    <g id="copper1"  gorn="0.1">
+        <g id="copper0"  gorn="0.1.0">
+            <rect width="58" id="square" fill="none"  stroke="rgb(255, 191, 0)" height="58" x="41" stroke-width="20" y="41" gorn="0.1.0.0"/>
+            <circle id="connector0pin" fill="none"  cx="70" cy="70" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.1"/>
+            <circle id="connector1pin" fill="none"  cx="70" cy="170" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.2"/>
+            <circle id="connector2pin" fill="none"  cx="70" cy="270" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.3"/>
+            <circle id="connector3pin" fill="none"  cx="70" cy="370" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.4"/>
+            <circle id="connector4pin" fill="none"  cx="70" cy="470" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.5"/>
+            <circle id="connector5pin" fill="none"  cx="70" cy="570" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.6"/>
+            <circle id="connector6pin" fill="none"  cx="70" cy="670" stroke="rgb(255, 191, 0)" r="29" stroke-width="20" gorn="0.1.0.7"/>
+        </g>
+    </g>
+    <g id="silkscreen"  gorn="0.2">
+        <line y1="20"  y2="720" stroke="white" x1="20" x2="20" stroke-width="10"/>
+        <line y1="720"  y2="720" stroke="white" x1="20" x2="120" stroke-width="10"/>
+        <line y1="720"  y2="20" stroke="white" x1="120" x2="120" stroke-width="10"/>
+        <line y1="20"  y2="20" stroke="white" x1="120" x2="20" stroke-width="10"/>
+        <line y1="55"  y2="20" stroke="white" x1="20" x2="55" stroke-width="5"/>
+        <!-- 120 -->
+    </g>
+</svg>

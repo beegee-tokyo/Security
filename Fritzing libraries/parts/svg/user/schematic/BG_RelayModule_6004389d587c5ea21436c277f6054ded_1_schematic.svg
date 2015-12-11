@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns="http://www.w3.org/2000/svg" gorn="0"  version="1.1" id="svg12160" height="290.72055" width="177.71181">
+    <desc>
+        <referenceFile>RelayModule_DFR0017__cc65612b453176597bf__schematic__b72f8ba4467b8fe2ec1334cf59e87fbf.svg</referenceFile>
+    </desc>
+    <g gorn="0.0"  id="schematic">
+        <defs  id="defs12162"/>
+        <metadata  id="metadata12165">
+            <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                <cc:Work rdf:about="" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                    <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+                    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+                    <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/"/>
+                </cc:Work>
+            </rdf:RDF>
+        </metadata>
+        <g gorn="0.0.2"  id="g3029">
+            <g gorn="0.0.2.0"  id="g3012">
+                <rect gorn="0.0.2.0.0"  id="rect4281" x="35.252026" y="34.067574" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" height="221.89258" width="108.92158"/>
+                <path gorn="0.0.2.0.1"  d="m 143.78277,143.52521 32.42903,0" id="path5106" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+                <text gorn="0.0.2.0.2"  id="tspan5278" x="75.858253" y="50.847279" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">5V</text>
+                <g  transform="matrix(0,-1,1,0,0,0)">
+                    <text gorn="0.0.2.0.3.0"  id="tspan5278-0" x="-168.85779" y="136.92673" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">SIGNAL</text>
+                </g>
+                <text gorn="0.0.2.0.4"  id="tspan5278-6" x="72.654198" y="252.83191" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">GND</text>
+                <text gorn="0.0.2.0.5"  id="tspan5278-00" x="39.761402" y="218.31096" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">NO</text>
+                <text gorn="0.0.2.0.6"  id="tspan5278-1" x="39.761402" y="148.47215" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">NC</text>
+                <text gorn="0.0.2.0.7"  id="tspan5278-4" x="39.781731" y="78.63343" style="font-size:14.87059689px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">IN</text>
+                <g  transform="matrix(0,1,-1,0,0,0)">
+                    <text gorn="0.0.2.0.8.0"  id="tspan5464" x="76.377785" y="-99.168175" style="font-size:20.81883621px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">RelayModule</text>
+                </g>
+                <g  transform="matrix(0,1,-1,0,0,0)">
+                    <text gorn="0.0.2.0.9.0"  id="tspan5466" x="76.377785" y="-73.14463" style="font-size:20.81883621px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DroidSans;-inkscape-font-specification:DroidSans">DFR0017</text>
+                </g>
+                <path gorn="0.0.2.0.10"  d="m 88.8559,1.5 0,32.42903" id="path5106-1" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+                <path gorn="0.0.2.0.11"  d="m 88.8559,256.79153 0,32.42903" id="path5106-15" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+                <path gorn="0.0.2.0.12"  d="m 1.5,74.325154 32.42903,0" id="path5106-2" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+                <path gorn="0.0.2.0.13"  d="m 1.5,143.46926 32.42903,0" id="path5106-7" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+                <path gorn="0.0.2.0.14"  d="m 1.5,212.61336 32.42903,0" id="path5106-6" style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"/>
+            </g>
+        </g>
+        <rect gorn="0.0.3"  fill="none" id="connector4" x="87.38909429835371" y="1.488208181347289" height="31.1932180485716" width="3.002891761774606"/>
+        <rect gorn="0.0.4"  fill="none" id="connector3" x="145.8108969370372" y="141.9399652081921" height="3.137858488129979" width="30.45222610212574"/>
+        <rect gorn="0.0.5"  fill="none" id="connector5" x="87.34978155322122" y="257.4299322488948" height="31.88116749120957" width="3.072201992574293"/>
+        <rect gorn="0.0.6"  fill="none" id="connector0" x="1.568521084397816" y="211.0678815349928" height="3.235051287810904" width="32.07880959689439"/>
+        <rect gorn="0.0.7"  fill="none" id="connector1" x="1.499799598964358" y="141.8732980066679" height="3.196761973064298" width="32.11494319944714"/>
+        <rect gorn="0.0.8"  fill="none" id="connector2" x="1.701764778721071" y="73.00708913682422" height="3.177228561467643" width="31.83728476851385"/>
+    </g>
+</svg>
