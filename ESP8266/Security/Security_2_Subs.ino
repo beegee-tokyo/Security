@@ -68,7 +68,7 @@ void sendAlarm() {
 }
 
 /**
-   toggleAlarmSound
+   playAlarmSound
    plays the tune defined with melody[] endless until ticker is detached
 */
 void playAlarmSound() {
@@ -108,15 +108,18 @@ void pirTrigger() {
     } else {
       digitalWrite(relayPort, LOW);
     }
+    if (alarmOn) {
+      alarmTimer.attach_ms(melodyTuneTime, playAlarmSound);
+    }
     pirTriggered = true;
     hasDetection = true;
   } else { // No detection
     ledFlasher.detach(); // Stop flashing if we have no detection
+    alarmTimer.detach();
     digitalWrite(alarmLED, HIGH);
     if (alarmOn) { // If alarm is active, continue to flash slowly
       ledFlasher.attach(0.4, ledFlash);
     }
-    alarmTimer.detach();
     pirTriggered = true;
     hasDetection = false;
   }

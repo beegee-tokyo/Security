@@ -11,7 +11,6 @@ void loop() {
   // Handle new PIR status if available
   if (pirTriggered && alarmOn) {
     pirTriggered = false;
-    alarmTimer.attach_ms(melodyTuneTime, playAlarmSound);
     sendAlarm();
   }
 

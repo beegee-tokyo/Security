@@ -17,6 +17,7 @@ void setup() {
   digitalWrite(alarmLED, HIGH); // Turn off LED
   digitalWrite(comLED, HIGH); // Turn off LED
   digitalWrite(relayPort, LOW); // Turn off Relay
+  digitalWrite(speakerPin, LOW); // Speaker off
 
   Serial.begin(115200);
   Serial.setDebugOutput(false);
@@ -83,13 +84,12 @@ void setup() {
   // Send Security restart message
   sendAlarm();
 
-  // Start the web server to serve the light value
+  // Start the web server to serve incoming requests
   server.begin();
 
   if (alarmOn) {
     ledFlasher.attach(1, ledFlash);
   } else {
-    Serial.println("off");
     ledFlasher.detach();
     digitalWrite(alarmLED, HIGH); // Turn off LED
   }
