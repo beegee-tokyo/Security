@@ -39,10 +39,8 @@ const char* password = "YOUR_WIFI_PASSWORD";
    End of file */
 #include "wifiAPinfo.h"
 
-#include "pitches.h"
-
-/** Red LED on GPIO0 for visual detection alarm */
-#define detLED 0
+/** Red LED on GPIO0 for visual signal if alarm is on or off */
+#define alarmLED 0
 /** Blue LED on GPIO2 for communication activities */
 #define comLED 2
 /** Input from PIR sensor */
@@ -54,7 +52,9 @@ const char* password = "YOUR_WIFI_PASSWORD";
 /** Clock pin for I2C communication with light sensor */
 #define sclPin 12
 /** Output to loudspeaker or piezo */
-int speakerPin = 15;
+#define speakerPin 15
+/** Input from push button */
+#define pushButton 14
 
 /** WiFiClient class to create TCP communication */
 WiFiClient tcpClient;
@@ -78,8 +78,6 @@ IPAddress multiIP (192,  168, 0, 255);
 
 /** MAC address of this module = unique id on the LAN */
 String localMac = "";
-/** Current time (only the hour) received from local time server */
-String localTime = "0";
 
 /** Timer for flashing red detection LED */
 Ticker ledFlasher;
@@ -92,10 +90,14 @@ Ticker getLightTimer;
 /** Timer for alarm siren */
 Ticker alarmTimer;
 
-/** Cycle of alarmTimer (used to create up and down going frequency */
-int alarmPWM = 10;
-/** Flag for frequency up or down */
-boolean alarmUp = true;
+/** Flag for alarm activity */
+boolean alarmOn = true;
+/** Holds the current button state. */
+volatile int state;
+/** Holds the last time debounce was evaluated (in millis). */
+volatile long lastDebounceTime = 0;
+/** The delay threshold for debounce checking. */
+const int debounceDelay = 50;
 
 /** Melody as delay time */
 //long melody[] = {1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1700,1700,1915,1915,1432,1432,1700,1700,1136,1136,1915,1915,1700,1700,1136,1136,1432,1915,1915,1700,1700,1136,1136,1136,1136,1275,1275,1275,1275};
@@ -109,12 +111,8 @@ long melody[] = {1915,1915,1915,1915,1275,1275,1275,1275,1915,1915,1915,1915,127
 int melodyPoint = 0;
 /** Number of melody[] notes */
 int melodyLenght = 40;
-/** Index to melody[], used in playAlarmSound */
-int melodyLenghtCount = 0;
 /** Time to play a single tune in milliseconds */
 int melodyTuneTime = 175;
-/** Flag if melody is playing */
-boolean melodyToneOn = true;
 
 /** Relay on delay time in seconds */
 int onTime = 30;

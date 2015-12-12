@@ -11,14 +11,14 @@
    change status of led on each call
 */
 void ledFlash() {
-  int state = digitalRead(detLED);
-  digitalWrite(detLED, !state);
+  int state = digitalRead(alarmLED);
+  digitalWrite(alarmLED, !state);
 }
 
 /**
    relayOff
    called by relayOffTimer
-   counts up until offDelay reaches onTime, then 
+   counts up until offDelay reaches onTime, then
    switch off the relay
    turn off the alarm sound
 */
@@ -99,12 +99,11 @@ void playAlarmSound() {
 void pirTrigger() {
   Serial.println("Interrupt from PIR pin");
   if (digitalRead(pirPort) == HIGH) { // Detection of movement
-    ledFlasher.attach(0.2, ledFlash);
+    ledFlasher.attach(0.2, ledFlash); // Flash fast if we have a detection
     relayOffTimer.detach();
     if (switchLights) {
       offDelay = 0;
       relayOffTimer.attach(1, relayOff);
-      alarmTimer.attach_ms(melodyTuneTime, playAlarmSound);
       digitalWrite(relayPort, HIGH);
     } else {
       digitalWrite(relayPort, LOW);
@@ -112,10 +111,56 @@ void pirTrigger() {
     pirTriggered = true;
     hasDetection = true;
   } else { // No detection
-    ledFlasher.detach();
-    digitalWrite(detLED, HIGH);
+    ledFlasher.detach(); // Stop flashing if we have no detection
+    digitalWrite(alarmLED, HIGH);
+    if (alarmOn) { // If alarm is active, continue to flash slowly
+      ledFlasher.attach(0.4, ledFlash);
+    }
+    alarmTimer.detach();
     pirTriggered = true;
     hasDetection = false;
+  }
+}
+
+/**
+   buttonTrig
+   Triggered when push button is pushed
+   Enables/Disables alarm sound
+*/
+void buttonTrig() {
+  // Get the pin reading.
+  int reading = digitalRead(pushButton);
+
+  // Ignore dupe readings.
+  if (reading == state) return;
+
+  boolean debounce = false;
+
+  // Check to see if the change is within a debounce delay threshold.
+  if ((millis() - lastDebounceTime) <= debounceDelay) {
+    debounce = true;
+  }
+
+  // This update to the last debounce check is necessary regardless of debounce state.
+  lastDebounceTime = millis();
+
+  // Ignore reads within a debounce delay threshold.
+  if (debounce) return;
+
+  // All is good, persist the reading as the state.
+  state = reading;
+
+  if (reading == HIGH) {
+    alarmOn = !alarmOn;
+    Serial.print("Alarm switched ");
+    if (alarmOn) {
+      Serial.println("on");
+      ledFlasher.attach(1, ledFlash);
+    } else {
+      Serial.println("off");
+      ledFlasher.detach();
+      digitalWrite(alarmLED, HIGH);
+    }
   }
 }
 
@@ -189,26 +234,29 @@ void sendLight(WiFiClient httpClient) {
 
   // Read the first line of the request
   String req = httpClient.readStringUntil('\r');
-//  if (req.substring(4, 8) == "/?p=") {
-//    String pwmValStr = "";
-//    int i = 8;
-//    while (req.substring(i, i + 1) != " ") {
-//      pwmValStr += req.substring(i, i + 1);
-//      i++;
-//    }
-//    if (pwmValStr.toInt() == 0) {
-//      alarmTimer.detach();
-//      analogWrite(speakerPin, 0);
-//    } else {
-//      alarmTimer.attach_ms(pwmValStr.toInt(), toggleAlarmSound);
-//    }
-//  }
+  if (req.substring(4, 9) == "/?a=0") {
+    alarmOn = false;
+    httpClient.flush();
+    httpClient.print("Alarm switched off");
+    httpClient.stop();
+    ledFlasher.detach();
+    digitalWrite(alarmLED, HIGH);
+    return;
+  }
+  if (req.substring(4, 9) == "/?a=1") {
+    alarmOn = true;
+    httpClient.flush();
+    httpClient.print("Alarm switched on");
+    httpClient.stop();
+    ledFlasher.attach(1, ledFlash);
+    return;
+  }
   httpClient.flush();
 
   // Prepare the response
-  String s = "HTTP / 1.1 200 OK\r\nContent - Type: text / html\r\n\r\n < !DOCTYPE HTML > \r\n<html>\r\n";
+  String s = ""; //"HTTP / 1.1 200 OK\r\nContent - Type: text / html\r\n\r\n < !DOCTYPE HTML > \r\n<html>\r\n";
   s += String(lightValue);
-  s += " < / html > \n";
+  //s += " </html> \n";
 
   // Send the response to the client
   httpClient.print(s);
