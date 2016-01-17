@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Security</string>
     <string name="not_connected">Waiting for connection</string>
+    <string name="bt_txt_alarm_on">Alarm on</string>
+    <string name="bt_txt_alarm_off">Alarm off</string>
+    <string name="bt_txt_status">Status</string>
+    <string name="bt_txt_spMonitor">SolarPV</string>
+    <string name="bt_txt_MyAirCon">Aircon</string>
+    <string name="dot_txt_alarm_status">Alarm status</string>
+    <string name="dot_txt_light">Light status</string>
+    <string name="dot_txt_alarm">Alarm</string>
+    <string name="err_no_esp">No ESP not found. Make sure it is switched on and is connected to the same WiFi network.</string>
+    <string name="err_esp">Communication with ESP failed. Make sure it is switched on and is connected to the same WiFi network.</string>
 </resources>

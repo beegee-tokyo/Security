@@ -1,49 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/text1"
+	<TableLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<ImageView
+				android:layout_width="150dp"
+				android:layout_height="150dp"
+				android:id="@+id/dot_alarm_status"
+				android:src="@mipmap/ic_dot"
+				android:contentDescription="@string/dot_txt_alarm_status"
+				android:layout_weight="1"/>
+
+			<ImageView
+				android:layout_width="150dp"
+				android:layout_height="150dp"
+				android:id="@+id/dot_light"
+				android:src="@mipmap/ic_dot"
+				android:contentDescription="@string/dot_txt_light"
+				android:layout_weight="1"/>
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_weight="1">
+
+				<ImageView
+					android:layout_width="150dp"
+					android:layout_height="150dp"
+					android:id="@+id/dot_alarm_off"
+					android:src="@mipmap/ic_dot"
+					android:contentDescription="@string/dot_txt_alarm"
+					android:layout_centerInParent="true"/>
+
+				<ImageView
+					android:layout_width="200dp"
+					android:layout_height="200dp"
+					android:id="@+id/dot_alarm_on"
+					android:src="@mipmap/ic_dot_red"
+
+					android:contentDescription="@string/dot_txt_alarm"
+					android:layout_centerInParent="true"
+					android:alpha="0"/>
+
+			</RelativeLayout>
+
+		</TableRow>
+
+		<TableRow
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="@string/dot_txt_alarm_status"
+				android:id="@+id/tv_alarm_status"
+				android:gravity="center_horizontal"
+				android:layout_weight="1"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="@string/dot_txt_light"
+				android:id="@+id/tv_light"
+				android:gravity="center_horizontal"
+				android:layout_weight="1"/>
+
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:text="@string/dot_txt_alarm"
+				android:id="@+id/tv_alarm"
+				android:gravity="center_horizontal"
+				android:layout_weight="1"/>
+
+		</TableRow>
+
+	</TableLayout>
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="10dp">
+
+		<ImageButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/bt_spMonitor"
+			android:src="@mipmap/ic_sp_monitor"
+			android:contentDescription="@string/bt_txt_spMonitor"
+			android:layout_weight="1"
+			android:onClick="onClick"/>
+
+		<ImageButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/bt_MyAirCon"
+			android:src="@mipmap/ic_myaircon"
+			android:contentDescription="@string/bt_txt_MyAirCon"
+			android:layout_weight="1"
+			android:onClick="onClick"/>
+
+	</LinearLayout>
+
+	<TextView
+        android:id="@+id/txt_debug"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/not_connected"
-        android:textSize="48sp"
-        android:layout_marginTop="48dp">
-    </TextView>
-
-    <TextView
-        android:id="@+id/text5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/not_connected"
-        android:textSize="48sp"
-        >
-    </TextView>
-
-    <TextView
-        android:id="@+id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/not_connected"
-        android:textSize="48sp">
-    </TextView>
-
-    <TextView
-        android:id="@+id/text3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/not_connected"
-        android:textSize="48sp">
-    </TextView>
-
-    <TextView
-        android:id="@+id/text4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/not_connected"
-        android:textSize="48sp">
+        android:textAppearance="@android:style/TextAppearance.Large">
     </TextView>
 
 </LinearLayout>

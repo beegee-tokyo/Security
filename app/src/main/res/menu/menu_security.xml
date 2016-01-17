@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="tk.giesecke.myaircon.myAirCon">
+
+	<item
+		android:id="@+id/bt_alarm"
+		android:icon="@drawable/ic_alarm_on"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_alarm_on"
+		app:showAsAction="always"
+		tools:ignore="AlwaysShowAction"/>
+
+	<item
+		android:id="@+id/bt_status"
+		android:icon="@drawable/ic_status"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_status"
+		app:showAsAction="always"
+		tools:ignore="AlwaysShowAction"/>
+
+</menu>

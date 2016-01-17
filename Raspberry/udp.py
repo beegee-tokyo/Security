@@ -14,6 +14,6 @@ while True:
     if msgParts[2] == '1':
         print ("Alarm - Intruder")
         subprocess.call(["amixer", "cset", "numid=3", "1"])
-        subprocess.call(["mplayer", "-volume", "100", "-loop", "5", "/media/TERESA/dog.mp3"])
+        subprocess.call(["mplayer", "-volume", "100", "-loop", "1", "/media/TERESA/dog.mp3"])
         subprocess.call(["amixer", "cset", "numid=3", "2"])
 

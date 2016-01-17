@@ -112,7 +112,7 @@ public class UDPlistener extends Service {
 					.getColor(android.R.color.holo_red_light);
 			doAlarm = true;
 		}
-		notifText += " Light = " + msgSplit[3] + " lux";
+		//notifText += " Light = " + msgSplit[3] + " lux";
 
 		/* Pointer to notification builder for export/import arrow */
 		NotificationCompat.Builder myNotifBuilder;
