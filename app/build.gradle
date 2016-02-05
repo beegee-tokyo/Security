@@ -7,8 +7,8 @@ android {
 		applicationId 'tk.giesecke.security'
 		minSdkVersion 14
 		targetSdkVersion 23
-		versionCode 1
-		versionName "1.0"
+		versionCode 2
+		versionName '2.0'
 	}
 	buildTypes {
 		release {
@@ -27,4 +27,5 @@ dependencies {
 	compile 'com.android.support:design:23.1.0'
 	compile 'com.squareup.okio:okio:1.6.0'
 	compile 'com.squareup.okhttp:okhttp:2.7.2'
+	compile 'com.google.android.gms:play-services:8.4.0'
 }

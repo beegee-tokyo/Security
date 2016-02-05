@@ -19,4 +19,19 @@
 		app:showAsAction="always"
 		tools:ignore="AlwaysShowAction"/>
 
+	<item
+		android:id="@+id/bt_regId"
+		android:icon="@drawable/ic_registration"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_registration"
+		app:showAsAction="always"
+		tools:ignore="AlwaysShowAction"/>
+
+	<item
+		android:id="@+id/bt_selAlarm"
+		android:icon="@drawable/ic_settings"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_registration"
+		app:showAsAction="ifRoom"/>
+
 </menu>

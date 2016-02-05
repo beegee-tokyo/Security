@@ -20,7 +20,9 @@
 				android:id="@+id/dot_alarm_status"
 				android:src="@mipmap/ic_dot"
 				android:contentDescription="@string/dot_txt_alarm_status"
-				android:layout_weight="1"/>
+				android:layout_weight="1"
+				android:onClick="onClick"
+				android:clickable="true"/>
 
 			<ImageView
 				android:layout_width="150dp"

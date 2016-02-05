@@ -6,9 +6,16 @@
     <string name="bt_txt_status">Status</string>
     <string name="bt_txt_spMonitor">SolarPV</string>
     <string name="bt_txt_MyAirCon">Aircon</string>
+    <string name="bt_txt_registration">Register</string>
     <string name="dot_txt_alarm_status">Alarm status</string>
     <string name="dot_txt_light">Light status</string>
     <string name="dot_txt_alarm">Alarm</string>
     <string name="err_no_esp">No ESP not found. Make sure it is switched on and is connected to the same WiFi network.</string>
     <string name="err_esp">Communication with ESP failed. Make sure it is switched on and is connected to the same WiFi network.</string>
+    <string name="err_unknown">Unknown error</string>
+    <string name="snd_alarm">Alarm</string>
+    <string name="snd_alert">Alert</string>
+    <string name="snd_dog">Dog</string>
+	<string name="sound_selector_title">Select Alarm sound</string>
+	<string name="no_alarm_sel">No Alarm</string>
 </resources>
