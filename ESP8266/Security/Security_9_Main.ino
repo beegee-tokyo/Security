@@ -48,43 +48,71 @@ void loop() {
 		}
 	}
 
-	wdt_reset();
-	// Send status update if button was pressed
-	if (buttonWasPressed) {
-		buttonWasPressed = false;
-		sendAlarm(false);
-	}
+	// wdt_reset();
+	// // Check if button was pressed
+	// if (digitalRead(pushButton) == HIGH) { // button pushed (or electric spike on the line?)
+		// if (!hasDetection) { // If detection is on ignore any button push (EMI problem)
+			// delay(100); // Sit around for 100ms and then check again
+			// if (digitalRead(pushButton) == HIGH) { // still high? Then maybe a real push and not a spike
+				// alarmOn = !alarmOn;
+				// //		Serial.print("Alarm switched ");
+				// if (alarmOn && !hasDetection) {
+					// //		Serial.println("on");
+					// ledFlasher.attach(1, redLedFlash);
+				// } else {
+					// //		Serial.println("off");
+					// ledFlasher.detach();
+					// digitalWrite(alarmLED, HIGH);
+				// }
+				// sendAlarm(false);
+			// }
+		// }
+	// }
+	
+	// wdt_reset();
+	// // Handle new time update request
+	// if (timeUpdateTriggered) {
+		// timeUpdateTriggered = false;
+		// getTime();
+	// }
 
-	wdt_reset();
-	// Handle new time update request
-	if (timeUpdateTriggered) {
-		timeUpdateTriggered = false;
-		getTime();
-	}
-
-	wdt_reset();
-	// Handle new light update request
-	if (lightUpdateTriggered) {
-		lightUpdateTriggered = false;
-		getLight();
-	}
+	// wdt_reset();
+	// // Handle new light update request
+	// if (lightUpdateTriggered) {
+		// lightUpdateTriggered = false;
+		// getLight();
+	// }
 
 	wdt_reset();
 	// Handle new LDR update request
 	if (lightLDRTriggered) {
 		lightLDRTriggered = false;
-		getLDR();
+		if (getLDR()) {
+			sendAlarm(false);
+		}
 	}
 
 	wdt_reset();
 	// Handle new client request on HTTP server if available
 	WiFiClient client = server.available();
 	if (client) {
+		digitalWrite(comLED, LOW);
 		replyClient(client);
+		digitalWrite(comLED, HIGH);
 	}
 
 	wdt_reset();
+	// Handle OTA updates
 	ArduinoOTA.handle();
+	
+	// wdt_reset();
+	// // Give a "I am alive" signal
+	// liveCnt++;
+	// if (liveCnt == 50000) {
+		// blueLedFlash();
+		// liveCnt = 0;
+	// }
+	
 }
 
 

@@ -1,3 +1,4 @@
+boolean oldAlarmOn;
 /**
  * Initialization of GPIO pins, WiFi connection, timers and sensors
  */
@@ -84,8 +85,8 @@ void setup() {
 	// TODO check hardware for connections between PIR and button input
 	// PIR alert triggers a button push as well (but only once)
 	// maybe it is EMV problem ???
-	// For now the button is disabled
-	attachInterrupt(pushButton, buttonTrig, CHANGE);
+	// For now the button interrupt is disabled
+	//attachInterrupt(pushButton, buttonTrig, RISING);
 
 	// Initialize file system.
 	if (!SPIFFS.begin())
@@ -105,7 +106,9 @@ void setup() {
 		lastRebootReason = rebootReason;
 	}
 	Serial.println("====================");
-
+	
+	// Preset alarmOn change verifier;
+	oldAlarmOn = alarmOn;
 	// Send Security restart message
 	sendAlarm(true);
 

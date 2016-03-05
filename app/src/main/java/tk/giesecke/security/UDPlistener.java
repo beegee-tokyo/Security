@@ -5,8 +5,11 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -35,6 +38,9 @@ import java.util.Calendar;
 
 public class UDPlistener extends Service {
 
+	/** Receiver for screen on/off broadcast msgs */
+	private static BroadcastReceiver mReceiver = null;
+
 	private static final String DEBUG_LOG_TAG = "Security-UDP";
 
 	private static final int UDP_SERVER_PORT = 5000;
@@ -43,6 +49,7 @@ public class UDPlistener extends Service {
 	private final Boolean shouldRestartSocketListen=true;
 	private DatagramSocket socket;
 	private static Context intentContext;
+	WifiManager.MulticastLock lock = null;
 
 	public UDPlistener() {
 	}
@@ -55,6 +62,9 @@ public class UDPlistener extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
+		// Start in foreground (to avoid being killed)
+		startForeground(1, ServiceNotification(this));
+
 		//this service will run until we stop it
 		return START_STICKY;
 	}
@@ -71,17 +81,31 @@ public class UDPlistener extends Service {
 			StrictMode.setThreadPolicy(policy);
 		}
 
+		// Start listener to connection changes
+		/** IntentFilter to receive connection change broadcast msgs */
+		IntentFilter filter = new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION);
+		/** Receiver for screen on/off broadcast msgs */
+		UDPlistener.mReceiver = new EventReceiver();
+		registerReceiver(UDPlistener.mReceiver, filter);
+
+		if (!GCMIntentService.isHomeWiFi(getApplicationContext())) { // We have no local WiFi connection!
+			return;
+		}
 		// Get the MulticastLock to be able to receive multicast UDP messages
 		WifiManager wifi = (WifiManager)getSystemService( Context.WIFI_SERVICE );
 		if(wifi != null){
-			WifiManager.MulticastLock lock = wifi.createMulticastLock("Log_Tag");
-			lock.acquire();
+			if (lock != null) { // In case we restart after receiver problem
+				lock = wifi.createMulticastLock("Security");
+				lock.acquire();
+			}
 		}
 
+		// TODO the below code does not work! UDP broadcast messages are not received if screen is
+		// off or locked. We use GCM instead!
 		// Keep device awake to make sure we receive the alarm message
-		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-		@SuppressWarnings("deprecation") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "whatever");
-		wl.acquire();
+//		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+//		@SuppressWarnings("deprecation") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "whatever");
+//		wl.acquire();
 
 		// Start listener for UDP broadcast messages
 		startListenForUDPBroadcast();
@@ -108,17 +132,16 @@ public class UDPlistener extends Service {
 		String senderIP = packet.getAddress().getHostAddress();
 		String message = new String(packet.getData()).trim();
 
-		if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Got UDP broadcast from " + senderIP + ", message: " + message);
 
 		// Check if response is a JSON array
 		if (isJSONValid(message)) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Got JSON: " + message);
 			JSONObject jsonResult;
 			try {
 				jsonResult = new JSONObject(message);
 				try {
 					String broadCastDevice = jsonResult.getString("device");
 					if (broadCastDevice.startsWith("sf")) { // Broadcast from security device
+						if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Got UDP broadcast from " + senderIP + ", message: " + message);
 						alarmNotif(jsonResult, intentContext);
 					}
 				} catch (JSONException ignore) {
@@ -130,6 +153,7 @@ public class UDPlistener extends Service {
 				return;
 			}
 			sendUDPBroadcast(senderIP, message);
+			startAsyncDBWrite(jsonResult);
 		}
 	}
 
@@ -142,10 +166,8 @@ public class UDPlistener extends Service {
 					while (shouldRestartSocketListen) {
 						listenAndWaitAndThrowIntent(broadcastIP, port);
 					}
-					//if (!shouldListenForUDPBroadcast) throw new ThreadDeath();
 				} catch (Exception e) {
-					if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "no longer listening for UDP broadcasts cause of error " + e.getMessage());
-					if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "restart listener for UDP broadcasts after error");
+					if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Restart UDP listener after error " + e.getMessage());
 					onCreate();
 				}
 			}
@@ -193,10 +215,7 @@ public class UDPlistener extends Service {
 	 */
 	public static void alarmNotif(JSONObject jsonValues, Context notifContext) {
 		int hasAlarmInt;
-		int hasAlarmOnInt;
-		int hasLightOnInt;
-		int hasRebootedInt;
-		long lightValueLong;
+		int hasAlarmActive;
 		String deviceIDString;
 		try {
 			deviceIDString = jsonValues.getString("device");
@@ -211,129 +230,80 @@ public class UDPlistener extends Service {
 			hasAlarmInt = 0;
 		}
 		try {
-			hasAlarmOnInt = jsonValues.getInt("alarm_on");
+			hasAlarmActive = jsonValues.getInt("alarm_on");
 		} catch (JSONException e) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing alarm setting in JSON object" + e.getMessage());
-			hasAlarmOnInt = 1;
+			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing alarm status in JSON object" + e.getMessage());
+			hasAlarmActive = 0;
 		}
-		try {
-			hasLightOnInt = jsonValues.getInt("light_on");
-		} catch (JSONException e) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing light setting in JSON object" + e.getMessage());
-			hasLightOnInt = 0;
-		}
-		try {
-			hasRebootedInt = jsonValues.getInt("boot");
-		} catch (JSONException e) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing boot info in JSON object" + e.getMessage());
-			hasRebootedInt = 0;
-		}
-		try {
-			lightValueLong = jsonValues.getLong("light_val");
-		} catch (JSONException e) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing light value in JSON object" + e.getMessage());
-			lightValueLong = 0;
-		}
-		/** String for notification */
-		String notifText;
-		/** Icon for notification */
-		int notifIcon;
-		/** Background color for notification icon in SDK Lollipop and newer */
-		int notifColor;
-		/** Need to play alarm sound */
-		boolean doAlarm = false;
 
-		if (hasAlarmInt == 1) {
+		// Show notification only if it is an alarm
+		if (hasAlarmInt == 1 && hasAlarmActive == 1) {
+			/** String for notification */
+			String notifText;
+			/** Icon for notification */
+			int notifIcon;
+			/** Background color for notification icon in SDK Lollipop and newer */
+			int notifColor;
+
 			notifIcon = R.drawable.detection;
 			notifText = "Intruder! from " + deviceIDString;
 			//noinspection deprecation
-			notifColor = notifContext.getResources()
-					.getColor(android.R.color.holo_red_light);
-			doAlarm = true;
-		} else {
-			notifIcon = R.drawable.no_detection;
-			notifText = "No detection at " + deviceIDString;
-			//noinspection deprecation
-			notifColor = notifContext.getResources()
-					.getColor(android.R.color.holo_green_light);
-		}
-		if (hasAlarmOnInt == 1) {
-			notifText += "\nAlarm active";
-		} else {
-			notifText += "\nAlarm not active";
-		}
-		if (hasLightOnInt == 1) {
-			notifText += "\nLight active";
-		} else {
-			notifText += "\nLight not active";
-		}
-		if (lightValueLong != 0) {
-			notifText += "\nLight = " + lightValueLong + " lux";
-		}
-		if (hasRebootedInt != 0) {
-			notifText += "\nDevice restarted!";
-		}
-		try {
-			String rebootReason = jsonValues.getString("reboot");
-			notifText += "\nReboot reason = " + rebootReason;
-		} catch (JSONException e) {
-			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing reboot reason in JSON object" + e.getMessage());
-		}
+			notifColor = notifContext.getResources().getColor(android.R.color.holo_red_light);
 
-		if (BuildConfig.DEBUG) useFileAsyncTask(jsonValues);
+			if (BuildConfig.DEBUG) startAsyncFileWrite(jsonValues);
+			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Wrote to file: " + jsonValues.toString());
 
-		/* Pointer to notification builder for export/import arrow */
-		NotificationCompat.Builder myNotifBuilder;
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-			myNotifBuilder = new NotificationCompat.Builder(notifContext)
-					.setContentTitle(notifContext.getString(R.string.app_name))
-					.setContentIntent(PendingIntent.getActivity(notifContext, 0, new Intent(notifContext, Security.class), 0))
-					.setAutoCancel(false)
-					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-					.setVisibility(Notification.VISIBILITY_PUBLIC)
-					.setWhen(System.currentTimeMillis());
-		} else {
-			myNotifBuilder = new NotificationCompat.Builder(notifContext)
-					.setContentTitle(notifContext.getString(R.string.app_name))
-					.setContentIntent(PendingIntent.getActivity(notifContext, 0, new Intent(notifContext, Security.class), 0))
-					.setAutoCancel(false)
-					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-					.setWhen(System.currentTimeMillis());
-		}
+			/* Pointer to notification builder for export/import arrow */
+			NotificationCompat.Builder myNotifBuilder;
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+				myNotifBuilder = new NotificationCompat.Builder(notifContext)
+						.setContentTitle(notifContext.getString(R.string.app_name))
+						.setContentIntent(PendingIntent.getActivity(notifContext, 0, new Intent(notifContext, Security.class), 0))
+						.setAutoCancel(false)
+						.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+						.setVisibility(Notification.VISIBILITY_PUBLIC)
+						.setWhen(System.currentTimeMillis());
+			} else {
+				myNotifBuilder = new NotificationCompat.Builder(notifContext)
+						.setContentTitle(notifContext.getString(R.string.app_name))
+						.setContentIntent(PendingIntent.getActivity(notifContext, 0, new Intent(notifContext, Security.class), 0))
+						.setAutoCancel(false)
+						.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+						.setWhen(System.currentTimeMillis());
+			}
 
-		/* Pointer to notification manager for export/import arrow */
-		NotificationManager notificationManager1 = (NotificationManager) notifContext.getSystemService(Context.NOTIFICATION_SERVICE);
+			/* Pointer to notification manager for export/import arrow */
+			NotificationManager notificationManager = (NotificationManager) notifContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		if (doAlarm) {
 			/** Access to shared preferences of app widget */
 			String selUri = intentContext.getSharedPreferences("Security", 0).getString("alarmUri", "");/** Uri of selected alarm */
 			myNotifBuilder.setSound(Uri.parse(selUri));
-		}
 
-		myNotifBuilder.setSmallIcon(notifIcon)
-				.setContentText(notifText)
-				.setContentText(notifText)
-				.setStyle(new NotificationCompat.BigTextStyle().bigText(notifText))
-				.setTicker(notifText);
-		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			myNotifBuilder.setColor(notifColor);
-		}
+			myNotifBuilder.setSmallIcon(notifIcon)
+					.setContentText(notifText)
+					.setContentText(notifText)
+					.setStyle(new NotificationCompat.BigTextStyle().bigText(notifText))
+					.setTicker(notifText);
+			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				myNotifBuilder.setColor(notifColor);
+			}
 
-		/* Pointer to notification for export/import arrow */
-		Notification notification1 = myNotifBuilder.build();
-		notificationManager1.notify(1, notification1);
+			/* Pointer to notification */
+			Notification alarmNotification = myNotifBuilder.build();
+			notificationManager.notify(2, alarmNotification);
+		}
 	}
 
-	private static void useFileAsyncTask(JSONObject jsonValues) {
-		FileWorkerAsyncTask task = new FileWorkerAsyncTask(intentContext);
+	private static void startAsyncFileWrite(JSONObject jsonValues) {
+		asyncFileWrite task = new asyncFileWrite(intentContext);
 		task.execute(jsonValues);
 	}
 
-	private static class FileWorkerAsyncTask extends AsyncTask<JSONObject, Void, Void> {
+	private static class asyncFileWrite extends AsyncTask<JSONObject, Void, Void> {
 
 		private final Context myContextRef;
 
-		public FileWorkerAsyncTask(Context myContextRef) {
+		public asyncFileWrite(Context myContextRef) {
 			this.myContextRef = myContextRef;
 		}
 
@@ -356,6 +326,36 @@ public class UDPlistener extends Service {
 		}
 	}
 
+	public static void startAsyncDBWrite(JSONObject jsonValues) {
+		asyncDBWrite task = new asyncDBWrite(intentContext);
+		task.execute(jsonValues);
+	}
+
+	private static class asyncDBWrite extends AsyncTask<JSONObject, Void, Void> {
+
+		private final Context myContextRef;
+
+		public asyncDBWrite(Context myContextRef) {
+			this.myContextRef = myContextRef;
+		}
+
+		@Override
+		protected Void doInBackground(JSONObject... params) {
+
+			JSONObject jsonResult = params[0];
+			/** Instance of DataBaseHelper */
+			DataBaseHelper myDBhelper = new DataBaseHelper(myContextRef);
+			/** Instance of data base */
+			SQLiteDatabase myDataBase = myDBhelper.getWritableDatabase();
+			if (!DataBaseHelper.addData(myDataBase,jsonResult)) {
+				if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Writing into database failed " + jsonResult.toString());
+			}
+			myDataBase.close();
+			myDBhelper.close();
+			return null;
+		}
+	}
+
 	/**
 	 * Get current time as string
 	 *
@@ -368,5 +368,60 @@ public class UDPlistener extends Service {
 		/** Time format */
 		@SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("dd-MM HH:mm");
 		return df.format(cal.getTime());
+	}
+
+	/**
+	 * Display notification that UDP listener is active
+	 *
+	 * @param context
+	 *          Context of the application
+	 * @return <code>Notification</code>
+	 *          Instance of the notification
+	 */
+	private Notification ServiceNotification(Context context) {
+		/** String for notification */
+		String notifText;
+		/** Icon for notification */
+		int notifIcon;
+		/** Background color for notification icon in SDK Lollipop and newer */
+		int notifColor;
+
+		// Prepare notification for foreground service
+		notifIcon = R.drawable.no_detection;
+		notifText = context.getResources().getString(R.string.udp_listener);
+		//noinspection deprecation
+		notifColor = context.getResources()
+				.getColor(android.R.color.holo_green_light);
+
+		/* Pointer to notification builder for export/import arrow */
+		NotificationCompat.Builder myNotifBuilder;
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+			myNotifBuilder = new NotificationCompat.Builder(context)
+					.setContentTitle(context.getString(R.string.app_name))
+					.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, Security.class), 0))
+					.setAutoCancel(false)
+					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+					.setVisibility(Notification.VISIBILITY_PUBLIC)
+					.setWhen(System.currentTimeMillis());
+		} else {
+			myNotifBuilder = new NotificationCompat.Builder(context)
+					.setContentTitle(context.getString(R.string.app_name))
+					.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, Security.class), 0))
+					.setAutoCancel(false)
+					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+					.setWhen(System.currentTimeMillis());
+		}
+
+		myNotifBuilder.setSmallIcon(notifIcon)
+				.setContentText(notifText)
+				.setContentText(notifText)
+				.setStyle(new NotificationCompat.BigTextStyle().bigText(notifText))
+				.setTicker(notifText);
+		if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			myNotifBuilder.setColor(notifColor);
+		}
+
+		/* Pointer to notification */
+		return myNotifBuilder.build();
 	}
 }

@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -30,8 +32,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.common.ConnectionResult;
@@ -74,9 +85,6 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 	private Menu abMenu;
 	/** A HTTP client to access the spMonitor device */
 	private static OkHttpClient client;
-
-	@SuppressWarnings("FieldCanBeLocal")
-	private static final String secIP = "http://192.168.0.141";
 
 	/** Status flag for alarm */
 	private boolean hasAlarmOn = true;
@@ -150,6 +158,11 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 		}
 
 		tvDebug = (TextView) findViewById(R.id.txt_debug);
+		if (GCMIntentService.isHomeWiFi(this)) {
+			tvDebug.setText(getResources().getString(R.string.at_home));
+		} else {
+			tvDebug.setText(getResources().getString(R.string.not_home));
+		}
 		ivAlarmStatus = (ImageView) findViewById(R.id.dot_alarm_status);
 		ivLightStatus = (ImageView) findViewById(R.id.dot_light);
 		ivAlarmOn = (ImageView) findViewById(R.id.dot_alarm_on);
@@ -167,6 +180,8 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 		animator.setRepeatCount(-1);
 
 		client = new OkHttpClient();
+
+		initChart();
 	}
 
 	/**
@@ -176,17 +191,16 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 	protected void onResume() {
 		super.onResume();
 		// Register the receiver for messages from UDP & GCM listener
-		if (activityReceiver != null) {
-			//Create an intent filter to listen to the broadcast sent with the action "ACTION_STRING_ACTIVITY"
-			IntentFilter intentFilter = new IntentFilter(UDPlistener.BROADCAST_RECEIVED);
-			//Map the intent filter to the receiver
-			registerReceiver(activityReceiver, intentFilter);
-		}
+		// Create an intent filter to listen to the broadcast sent with the action "ACTION_STRING_ACTIVITY"
+		IntentFilter intentFilter = new IntentFilter(UDPlistener.BROADCAST_RECEIVED);
+		//Map the intent filter to the receiver
+		registerReceiver(activityReceiver, intentFilter);
 
 		if (!isMyServiceRunning(UDPlistener.class)) {
 			// Start service to listen to UDP broadcast messages
 			startService(new Intent(this, UDPlistener.class));
 		}
+
 		// Get initial status from ESP8266
 		new callESP().execute("/?s");
 	}
@@ -263,6 +277,57 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 						tvDebug.setText(debugTxt);
 					}
 				}
+				break;
+			case R.id.bt_switchView:
+				TextView debugTxt = (TextView) findViewById(R.id.txt_debug);
+				com.github.mikephil.charting.charts.LineChart secChart =
+						(com.github.mikephil.charting.charts.LineChart) findViewById(R.id.graph_sec);
+				com.github.mikephil.charting.charts.LineChart acChart =
+						(com.github.mikephil.charting.charts.LineChart) findViewById(R.id.graph_ac);
+				LinearLayout setAlarmTime = (LinearLayout) findViewById(R.id.set_alarm);
+				/** Menu item to show if alarm is enabled or not */
+				MenuItem alarmMenu = null;
+				if (abMenu != null) { // Menu might not be available yet
+					/** Menu item to toggle alarm on/off */
+					alarmMenu = abMenu.getItem(4);
+				}
+				if (setAlarmTime.getVisibility() == View.VISIBLE) {
+					setAlarmTime.setVisibility(View.GONE);
+					debugTxt.setVisibility(View.GONE);
+					acChart.setVisibility(View.VISIBLE);
+					secChart.setVisibility(View.VISIBLE);
+					initChart();
+					if (alarmMenu != null) { // Menu might not be available yet
+						alarmMenu.setIcon(R.drawable.ic_debug);
+					}
+				} else if (secChart.getVisibility() == View.VISIBLE) {
+					setAlarmTime.setVisibility(View.GONE);
+					debugTxt.setVisibility(View.VISIBLE);
+					acChart.setVisibility(View.GONE);
+					secChart.setVisibility(View.GONE);
+					if (alarmMenu != null) { // Menu might not be available yet
+						alarmMenu.setIcon(R.drawable.ic_alarm);
+					}
+				} else if (debugTxt.getVisibility() == View.VISIBLE){
+					setAlarmTime.setVisibility(View.VISIBLE);
+					debugTxt.setVisibility(View.GONE);
+					acChart.setVisibility(View.GONE);
+					secChart.setVisibility(View.GONE);
+					if (alarmMenu != null) { // Menu might not be available yet
+						alarmMenu.setIcon(R.drawable.ic_chart);
+					}
+				}
+				break;
+			case R.id.bt_clearGraph:
+				/** Instance of DataBaseHelper */
+				DataBaseHelper myDBhelper = new DataBaseHelper(getApplicationContext());
+				/** Instance of data base */
+				SQLiteDatabase myDataBase = myDBhelper.getReadableDatabase();
+				/** Delete all data from database */
+				DataBaseHelper.delAllData(myDataBase);
+				myDataBase.close();
+				myDBhelper.close();
+				initChart();
 				break;
 			case R.id.bt_selAlarm:
 				notifNames = new ArrayList<>();
@@ -350,6 +415,9 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 				lvAlarmList.setItemChecked(uriIndex, true);
 				lvAlarmList.setSelection(uriIndex);
 				break;
+			case R.id.bt_updateRemoteDB:
+				// TODO start async task to get all data from the spMonitor device and sync it with the remote DB
+				break;
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -382,6 +450,10 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 					ivAlarmStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot_orange));
 					new callESP().execute("/?a=1");
 				}
+				break;
+			case R.id.graph_ac:
+			case R.id.graph_sec:
+				initChart();
 				break;
 		}
 	}
@@ -450,7 +522,7 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 
 			result.cmdReq = params[0];
 			/** URL to be called */
-			String urlString = secIP + params[0]; // URL to call
+			String urlString = WEB_SERVER_URL + params[0]; // URL to call
 
 			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "callESP = " + urlString);
 
@@ -572,6 +644,7 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 						if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Create JSONObject from String failed " + e.getMessage());
 					}
 				}
+				initChart();
 			}
 		});
 	}
@@ -585,20 +658,13 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 	 *              String with the status in viewable format
 	 */
 	private String getDeviceStatus(JSONObject jsonResult) {
-		/** Alarm status (alarm active or not) */
-		int hasAlarmInt;
-		/** Alarm enabled status */
-		int hasAlarmOnInt;
-		/** Light enabled status */
-		int hasLightOnInt;
-		/** Reboot status */
-		int hasRebootedInt;
-		/** Signal strength of WiFi at ESP8266 */
-		int rssiValueInt;
 		/** Device ID */
 		String deviceIDString;
 		/** Menu item to show if alarm is enabled or not */
 		MenuItem alarmMenu = null;
+		/** String with the device related status */
+		String message = "";
+
 		if (abMenu != null) { // Menu might not be available yet
 			/** Menu item to toggle alarm on/off */
 			alarmMenu = abMenu.getItem(0);
@@ -611,78 +677,72 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 			deviceIDString = "unknown";
 		}
 		try {
-			hasAlarmInt = jsonResult.getInt("alarm");
+			if (jsonResult.getInt("alarm") == 1) {
+				message = "Intruder! from " + deviceIDString + "\n";
+				animator.start();
+			} else {
+				message = "No detection at " + deviceIDString + "\n";
+				animator.end();
+				ivAlarmOn.setAlpha(0f);
+			}
 		} catch (JSONException e) {
 			if (BuildConfig.DEBUG)
 				Log.d(DEBUG_LOG_TAG, "Missing alarm status in JSON object" + e.getMessage());
-			hasAlarmInt = 0;
 		}
 		try {
-			hasAlarmOnInt = jsonResult.getInt("alarm_on");
+			if (jsonResult.getInt("alarm_on") == 1) {
+				message += "Alarm active\n";
+				if (alarmMenu != null) { // Menu might not be available yet
+					alarmMenu.setTitle(R.string.bt_txt_alarm_off);
+					alarmMenu.setIcon(R.drawable.ic_alarm_off);
+				}
+				ivAlarmStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot_orange));
+				hasAlarmOn = true;
+			} else {
+				message += "Alarm not active\n";
+				if (alarmMenu != null) { // Menu might not be available yet
+					alarmMenu.setTitle(R.string.bt_txt_alarm_on);
+					alarmMenu.setIcon(R.drawable.ic_alarm_on);
+				}
+				ivAlarmStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot));
+				hasAlarmOn = false;
+			}
 		} catch (JSONException e) {
 			if (BuildConfig.DEBUG)
 				Log.d(DEBUG_LOG_TAG, "Missing alarm setting in JSON object" + e.getMessage());
-			hasAlarmOnInt = 1;
 		}
 		try {
-			hasLightOnInt = jsonResult.getInt("light_on");
+			if (jsonResult.getInt("light_on") == 1) {
+				message += "Light active\n";
+				ivLightStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot_green));
+			} else {
+				message += "Light not active\n";
+				ivLightStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot));
+			}
 		} catch (JSONException e) {
 			if (BuildConfig.DEBUG)
 				Log.d(DEBUG_LOG_TAG, "Missing light setting in JSON object" + e.getMessage());
-			hasLightOnInt = 0;
 		}
 		try {
-			hasRebootedInt = jsonResult.getInt("boot");
+			if (jsonResult.getInt("boot") != 0) {
+				message += "Device restarted!\n";
+			}
 		} catch (JSONException e) {
 			if (BuildConfig.DEBUG)
 				Log.d(DEBUG_LOG_TAG, "Missing boot info in JSON object" + e.getMessage());
-			hasRebootedInt = 0;
 		}
 		try {
-			rssiValueInt = jsonResult.getInt("rssi");
+			message += "Signal = " + jsonResult.getInt("rssi") + " dB\n";
 		} catch (JSONException e) {
 			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing rssi in JSON object" + e.getMessage());
-			rssiValueInt = 0;
 		}
-		/** String with the device related status */
-		String message;
-		if (hasAlarmInt == 1) {
-			message = "Intruder! from " + deviceIDString + "\n";
-			animator.start();
-		} else {
-			message = "No detection at " + deviceIDString + "\n";
-			animator.end();
-			ivAlarmOn.setAlpha(0f);
+		try {
+			message += "Debug: " + jsonResult.getString("reboot") + "\n";
+		} catch (JSONException e) {
+			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "Missing rssi in JSON object" + e.getMessage());
 		}
 
-		if (hasAlarmOnInt == 1) {
-			message += "Alarm active\n";
-			if (alarmMenu != null) { // Menu might not be available yet
-				alarmMenu.setTitle(R.string.bt_txt_alarm_off);
-				alarmMenu.setIcon(R.drawable.ic_alarm_off);
-			}
-			ivAlarmStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot_orange));
-			hasAlarmOn = true;
-		} else {
-			message += "Alarm not active\n";
-			if (alarmMenu != null) { // Menu might not be available yet
-				alarmMenu.setTitle(R.string.bt_txt_alarm_on);
-				alarmMenu.setIcon(R.drawable.ic_alarm_on);
-			}
-			ivAlarmStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot));
-			hasAlarmOn = false;
-		}
-		if (hasLightOnInt == 1) {
-			message += "Light active\n";
-			ivLightStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot_green));
-		} else {
-			message += "Light not active\n";
-			ivLightStatus.setImageDrawable(getResources().getDrawable(R.mipmap.ic_dot));
-		}
-		if (hasRebootedInt != 0) {
-			message += "Device restarted!\n";
-		}
-		message += "Signal = " + rssiValueInt + " dB\n";
+
 		return message;
 	}
 
@@ -921,4 +981,359 @@ public class Security extends AppCompatActivity implements View.OnClickListener,
 		return uriIndex;
 	}
 
+	/**
+	 * Initialize charts
+	 */
+	private void initChart() {
+		initSecChart();
+		initACChart();
+	}
+
+	/**
+	 * Initialize chart to show data from security device
+	 */
+	private void initSecChart() {
+
+		/** List to hold the timestamps for the chart */
+		ArrayList<String> timeSeries = new ArrayList<>();
+		/** List to hold the ldr values */
+		ArrayList<Entry> ldrSeries = new ArrayList<>();
+		/** List to hold the alarm status */
+		ArrayList<Entry> alarmSeries = new ArrayList<>();
+		/** List to hold the alarm on status */
+		ArrayList<Entry> alarmOnSeries = new ArrayList<>();
+		/** List to hold the switch light status */
+		ArrayList<Entry> switchLightsSeries = new ArrayList<>();
+		/** List to hold the rssi strength */
+		final ArrayList<Entry> rssiSeries = new ArrayList<>();
+
+		// Pointer to the chart in the layout
+		/* MPAndroid chart view for the current chart */
+		LineChart lineChart = (LineChart) findViewById(R.id.graph_sec);
+
+		timeSeries.clear();
+		ldrSeries.clear();
+		alarmSeries.clear();
+		alarmOnSeries.clear();
+		switchLightsSeries.clear();
+		rssiSeries.clear();
+
+		/** Instance of DataBaseHelper */
+		DataBaseHelper myDBhelper = new DataBaseHelper(getApplicationContext());
+		/** Instance of data base */
+		SQLiteDatabase myDataBase = myDBhelper.getReadableDatabase();
+		/** Cursor with data from database */
+		Cursor dbCursor = DataBaseHelper.getDeviceEntries(myDataBase,"sf1");
+		if (dbCursor != null) {
+			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "SF1 count = " + dbCursor.getCount());
+			dbCursor.moveToFirst();
+			for (int cursorIndex=0; cursorIndex<dbCursor.getCount(); cursorIndex++) {
+				timeSeries.add(dbCursor.getString(17));
+				if (dbCursor.getInt(6) != 0) {
+					ldrSeries.add(new Entry(dbCursor.getInt(6),cursorIndex));
+				} else {
+					if (cursorIndex != 0) {
+						ldrSeries.add(ldrSeries.get(cursorIndex-1));
+					} else {
+						ldrSeries.add(new Entry(0,cursorIndex));
+					}
+				}
+				if (dbCursor.getInt(1) == 1) {
+					alarmSeries.add(new Entry(500, cursorIndex));
+				} else if (dbCursor.getInt(1) == 0) {
+					alarmSeries.add(new Entry(0, cursorIndex));
+				}
+				if (dbCursor.getInt(2) == 1) {
+					alarmOnSeries.add(new Entry(400, cursorIndex));
+				} else if (dbCursor.getInt(2) == 0) {
+					alarmOnSeries.add(new Entry(0, cursorIndex));
+				}
+				if (dbCursor.getInt(3) == 1) {
+					switchLightsSeries.add(new Entry(300, cursorIndex));
+				} else if (dbCursor.getInt(3) == 0) {
+					switchLightsSeries.add(new Entry(0, cursorIndex));
+				}
+				if (dbCursor.getInt(7) != 0) {
+					rssiSeries.add(new Entry(Math.abs(dbCursor.getInt(7)*10), cursorIndex));
+				} else {
+					if (cursorIndex != 0) {
+						rssiSeries.add(rssiSeries.get(cursorIndex-1));
+					} else {
+						rssiSeries.add(new Entry(0, cursorIndex));
+					}
+				}
+				dbCursor.moveToNext();
+			}
+			dbCursor.close();
+		}
+		myDataBase.close();
+		myDBhelper.close();
+
+		/** Line data set for ldr data */
+		LineDataSet ldr = new LineDataSet(ldrSeries, "LDR");
+		/** Line data set for ldr data */
+		LineDataSet alarm = new LineDataSet(alarmSeries, "Alarm");
+		/** Line data set for alarmOn data */
+		LineDataSet alarmOn = new LineDataSet(alarmOnSeries, "Alarm on/off");
+		/** Line data set for switchLights data */
+		LineDataSet switchLights = new LineDataSet(switchLightsSeries, "Lights on/off");
+		/** Line data set for rssi data */
+		LineDataSet rssi = new LineDataSet(rssiSeries, "Signal");
+
+		// Configure LDR data
+		ldr.setLineWidth(1.75f);
+		ldr.setCircleSize(0f);
+		ldr.setColor(0xFFFFBB33);
+		ldr.setCircleColor(0xFFFFBB33);
+		ldr.setHighLightColor(0xFFFFBB33);
+		ldr.setFillColor(0xAAFFBB33);
+		ldr.setVisible(true);
+		ldr.setDrawValues(false);
+		//ldr.setDrawFilled(true);
+
+		// Configure Alarm data
+		alarm.setLineWidth(1.75f);
+		alarm.setCircleSize(0f);
+		alarm.setColor(Color.RED);
+		alarm.setCircleColor(Color.RED);
+		alarm.setHighLightColor(Color.RED);
+		alarm.setFillColor(0xAAFF0000);
+		alarm.setVisible(true);
+		alarm.setDrawValues(false);
+		//alarm.setDrawFilled(true);
+
+		// Configure alarm enabled data
+		alarmOn.setLineWidth(1.75f);
+		alarmOn.setCircleSize(0f);
+		alarmOn.setColor(0xFFFF7F50);
+		alarmOn.setCircleColor(0xFFFF7F50);
+		alarmOn.setHighLightColor(0xFFFF7F50);
+		alarmOn.setFillColor(0xAAFF7F50);
+		alarmOn.setVisible(true);
+		alarmOn.setDrawValues(false);
+		//alarmOn.setDrawFilled(true);
+
+		// Configure light enabled data
+		switchLights.setLineWidth(1.75f);
+		switchLights.setCircleSize(0f);
+		switchLights.setColor(0xFFFFFAF0);
+		switchLights.setCircleColor(0xFFFFFAF0);
+		switchLights.setHighLightColor(0xFFFFFAF0);
+		switchLights.setFillColor(0xAAFFFAF0);
+		switchLights.setVisible(true);
+		switchLights.setDrawValues(false);
+		//switchLights.setDrawFilled(true);
+
+		// Configure signal data
+		rssi.setLineWidth(1.75f);
+		rssi.setCircleSize(0f);
+		rssi.setColor(0xFF00FF00);
+		rssi.setCircleColor(0xFF00FF00);
+		rssi.setHighLightColor(0xFF00FF00);
+		rssi.setFillColor(0xAA00FF00);
+		rssi.setVisible(true);
+		rssi.setDrawValues(false);
+		//rssi.setDrawFilled(true);
+
+		/** Data set with data for the plots */
+		ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+		dataSets.add(ldr);
+		dataSets.add(alarm);
+		dataSets.add(alarmOn);
+		dataSets.add(switchLights);
+		dataSets.add(rssi);
+
+		/** Data object with the data set and the y values */
+		/* LineData for the plot */
+		LineData plotData = new LineData(timeSeries, dataSets);
+
+		lineChart.setBackgroundColor(Color.BLACK);
+		lineChart.setDrawGridBackground(false);
+		lineChart.setTouchEnabled(true);
+		lineChart.setDragEnabled(true);
+		lineChart.setAutoScaleMinMaxEnabled(true);
+		lineChart.setData(plotData);
+
+		/** Instance of left y axis */
+		YAxis lYAx = lineChart.getAxisLeft();
+		lYAx.setEnabled(true);
+		lYAx.setTextColor(Color.WHITE);
+		lYAx.setStartAtZero(false);
+		lYAx.setSpaceTop(1);
+		lYAx.setSpaceBottom(1);
+
+		/** Instance of x axis */
+		XAxis xAx = lineChart.getXAxis();
+		xAx.setEnabled(true);
+		xAx.setTextColor(Color.WHITE);
+		xAx.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+		//lineChart.getLegend().setEnabled(false);
+		lineChart.getLegend().setTextColor(Color.WHITE);
+
+		// let the chart know it's data has changed
+		lineChart.notifyDataSetChanged();
+		lineChart.invalidate();
+	}
+
+	/**
+	 * Initialize chart to show data from aircon remote
+	 */
+	private void initACChart() {
+
+		/** List to hold the timestamps for the chart */
+		ArrayList<String> timeSeries = new ArrayList<>();
+		/** List to hold the power status */
+		ArrayList<Entry> powerSeries = new ArrayList<>();
+		/** List to hold the consumption values */
+		ArrayList<Entry> consSeries = new ArrayList<>();
+		/** List to hold the status */
+		ArrayList<Entry> statusSeries = new ArrayList<>();
+		/** List to hold the auto status */
+		ArrayList<Entry> autoSeries = new ArrayList<>();
+
+		// Pointer to the chart in the layout
+		/* MPAndroid chart view for the current chart */
+		LineChart lineChart = (LineChart) findViewById(R.id.graph_ac);
+
+		timeSeries.clear();
+		powerSeries.clear();
+		consSeries.clear();
+		statusSeries.clear();
+		autoSeries.clear();
+
+		/** Instance of DataBaseHelper */
+		DataBaseHelper myDBhelper = new DataBaseHelper(getApplicationContext());
+		/** Instance of data base */
+		SQLiteDatabase myDataBase = myDBhelper.getReadableDatabase();
+		/** Cursor with data from database */
+		Cursor dbCursor = DataBaseHelper.getDeviceEntries(myDataBase, "fd1");
+		if (dbCursor != null) {
+			if (BuildConfig.DEBUG) Log.d(DEBUG_LOG_TAG, "FD1 count = " + dbCursor.getCount());
+			dbCursor.moveToFirst();
+			for (int cursorIndex=0; cursorIndex<dbCursor.getCount(); cursorIndex++) {
+				timeSeries.add(dbCursor.getString(17));
+				if (dbCursor.getInt(9) == 1) {
+					powerSeries.add(new Entry(400, cursorIndex));
+				} else if (dbCursor.getInt(9) == 0) {
+					powerSeries.add(new Entry(0, cursorIndex));
+				}
+				if (dbCursor.getInt(13) != 0) {
+					consSeries.add(new Entry(dbCursor.getInt(13), cursorIndex));
+				} else {
+					if (cursorIndex != 0) {
+						consSeries.add(consSeries.get(cursorIndex-1));
+					} else {
+						consSeries.add(new Entry(0, cursorIndex));
+					}
+				}
+				if (dbCursor.getInt(14) != 0) {
+					statusSeries.add(new Entry(dbCursor.getInt(14)*150, cursorIndex));
+				} else {
+					if (cursorIndex != 0) {
+						statusSeries.add(statusSeries.get(cursorIndex-1));
+					} else {
+						statusSeries.add(new Entry(0, cursorIndex));
+					}
+				}
+				if (dbCursor.getInt(15) == 1) {
+					autoSeries.add(new Entry(200, cursorIndex));
+				} else if (dbCursor.getInt(15) == 0) {
+					autoSeries.add(new Entry(0, cursorIndex));
+				}
+				dbCursor.moveToNext();
+			}
+			dbCursor.close();
+		}
+		myDataBase.close();
+		myDBhelper.close();
+
+		/** Line data set for power data */
+		LineDataSet power = new LineDataSet(powerSeries, "Power");
+		/** Line data set for cons data */
+		LineDataSet cons = new LineDataSet(consSeries, "Consumption");
+		/** Line data set for status data */
+		LineDataSet status = new LineDataSet(statusSeries, "Status");
+		/** Line data set for auto data */
+		LineDataSet auto = new LineDataSet(autoSeries, "Auto mode");
+
+		power.setLineWidth(1.75f);
+		power.setCircleSize(0f);
+		power.setColor(Color.RED);
+		power.setCircleColor(Color.RED);
+		power.setHighLightColor(Color.RED);
+		power.setFillColor(0xAAFF0000);
+		power.setVisible(true);
+		power.setDrawValues(false);
+		//power.setDrawFilled(true);
+
+		cons.setLineWidth(1.75f);
+		cons.setCircleSize(0f);
+		cons.setColor(0xFFFF7F50);
+		cons.setCircleColor(0xFFFF7F50);
+		cons.setHighLightColor(0xFFFF7F50);
+		cons.setFillColor(0xAAFF7F50);
+		cons.setVisible(true);
+		cons.setDrawValues(false);
+		//cons.setDrawFilled(true);
+
+		status.setLineWidth(1.75f);
+		status.setCircleSize(0f);
+		status.setColor(0xFF0000CD);
+		status.setCircleColor(0xFF0000CD);
+		status.setHighLightColor(0xFF0000CD);
+		status.setFillColor(0xAA0000CD);
+		status.setVisible(true);
+		status.setDrawValues(false);
+		//status.setDrawFilled(true);
+
+		auto.setLineWidth(1.75f);
+		auto.setCircleSize(0f);
+		auto.setColor(0xFF800080);
+		auto.setCircleColor(0xFF800080);
+		auto.setHighLightColor(0xFF800080);
+		auto.setFillColor(0xAA800080);
+		auto.setVisible(true);
+		auto.setDrawValues(false);
+		//auto.setDrawFilled(true);
+
+		/** Data set with data for the plots */
+		ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+		dataSets.add(power);
+		dataSets.add(cons);
+		dataSets.add(status);
+		dataSets.add(auto);
+
+		/** Data object with the data set and the y values */
+		/* LineData for the plot */
+		LineData plotData = new LineData(timeSeries, dataSets);
+
+		lineChart.setBackgroundColor(Color.BLACK);
+		lineChart.setDrawGridBackground(false);
+		lineChart.setTouchEnabled(true);
+		lineChart.setDragEnabled(true);
+		lineChart.setAutoScaleMinMaxEnabled(true);
+		lineChart.setData(plotData);
+
+		/** Instance of left y axis */
+		YAxis lYAx = lineChart.getAxisLeft();
+		lYAx.setEnabled(true);
+		lYAx.setTextColor(Color.WHITE);
+		lYAx.setStartAtZero(false);
+		lYAx.setSpaceTop(1);
+		lYAx.setSpaceBottom(1);
+
+		/** Instance of x axis */
+		XAxis xAx = lineChart.getXAxis();
+		xAx.setEnabled(true);
+		xAx.setTextColor(Color.WHITE);
+		xAx.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+		//lineChart.getLegend().setEnabled(false);
+		lineChart.getLegend().setTextColor(Color.WHITE);
+
+		// let the chart know it's data has changed
+		lineChart.notifyDataSetChanged();
+		lineChart.invalidate();
+	}
 }

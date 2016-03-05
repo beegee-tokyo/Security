@@ -34,4 +34,25 @@
 		android:title="@string/bt_txt_registration"
 		app:showAsAction="ifRoom"/>
 
+	<item
+		android:id="@+id/bt_switchView"
+		android:icon="@drawable/ic_chart"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_registration"
+		app:showAsAction="never"/>
+
+	<item
+		android:id="@+id/bt_clearGraph"
+		android:icon="@drawable/ic_erase"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_registration"
+		app:showAsAction="never"/>
+
+	<item
+		android:id="@+id/bt_updateRemoteDB"
+		android:icon="@drawable/ic_sync_db"
+		android:orderInCategory="100"
+		android:title="@string/bt_txt_syncDB"
+		app:showAsAction="never"/>
+
 </menu>

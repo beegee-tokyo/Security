@@ -21,18 +21,18 @@ void blueLedFlash() {
  * called by Ticker updateHourTimer
  * will initiate a call to getTime() from loop()
  */
-void triggerGetTime() {
-	timeUpdateTriggered = true;
-}
+// void triggerGetTime() {
+	// timeUpdateTriggered = true;
+// }
 
-/**
- * Sets flag lightUpdateTriggered to true for handling in loop()
- * called by Ticker updateLightTimer
- * will initiate a call to getLight() from loop()
- */
-void triggerGetLight() {
-	lightUpdateTriggered = true;
-}
+// /**
+ // * Sets flag lightUpdateTriggered to true for handling in loop()
+ // * called by Ticker updateLightTimer
+ // * will initiate a call to getLight() from loop()
+ // */
+// void triggerGetLight() {
+	// lightUpdateTriggered = true;
+// }
 
 /**
  * Sets flag lightLDRTriggered to true for handling in loop()
@@ -46,17 +46,30 @@ void triggerGetLDR() {
 /**
  * Reads analog input where LDR is connected
  * sets flag switchLights if value is lower than 850
+ *
+ * @return <code>boolean</code>
+ *		true if status changed
+ *		false if status is the same	
  */
-void getLDR() {
+boolean getLDR() {
+	/** Flag for light status change */
+	boolean hasChanged = false;
 	 // Check light only if relay is off and light is switched off
 	if (digitalRead(relayPort) == LOW) {
 		ldrValue = (analogRead(A0));
 		if (ldrValue < 850) {
+			if (switchLights == false) { // On change send status 
+				hasChanged = true;
+			}
 			switchLights = true;
 		} else {
+			if (switchLights == true) { // On change send status 
+				hasChanged = true;
+			}
 			switchLights = false;
 		}
 	}
+	return hasChanged;
 }
 
 /**
@@ -138,7 +151,7 @@ void createStatus(JsonObject& root) {
 	} else {
 		root["boot"] = 0;
 	}
-	root["light_val"] = lightValue;
+	// root["light_val"] = lightValue;
 
 	root["ldr_val"] = ldrValue;
 
@@ -422,7 +435,7 @@ void pirTrigger() {
 
 /**
  * Triggered when push button is pushed
- * enables/Disables alarm sound
+ * enables/disables alarm sound
  */
 void buttonTrig() {
 	// Get the pin reading.
@@ -471,43 +484,43 @@ void buttonTrig() {
  *	else
  *	- flag switchLights is set false (lights will not go on)
  */
-void getTime() {
-	digitalWrite(comLED, LOW);
-	/** Port for connection to server */
-	const int httpPort = 80;
-	if (!tcpClient.connect(ipTime, httpPort)) {
-		Serial.println("connection to time server " + String(ipAddr[0]) + "." + String(ipAddr[1]) + "." + String(ipAddr[2]) + "." + String(ipAddr[3]) + " failed");
-		digitalWrite(comLED, HIGH);
-		tcpClient.stop();
-		connectWiFi();
-		return;
-	}
-	tcpClient.print("GET /sd/spMonitor/date.php HTTP/1.0\r\n\r\n");
+// void getTime() {
+	// digitalWrite(comLED, LOW);
+	// /** Port for connection to server */
+	// const int httpPort = 80;
+	// if (!tcpClient.connect(ipTime, httpPort)) {
+		// Serial.println("connection to time server " + String(ipAddr[0]) + "." + String(ipAddr[1]) + "." + String(ipAddr[2]) + "." + String(ipAddr[3]) + " failed");
+		// digitalWrite(comLED, HIGH);
+		// tcpClient.stop();
+		// connectWiFi();
+		// return;
+	// }
+	// tcpClient.print("GET /sd/spMonitor/date.php HTTP/1.0\r\n\r\n");
 
-	// Read all the lines of the reply from server and print them to Serial
-	/** String for the return value from the time server */
-	String line = "";
-	while (tcpClient.connected()) {
-		line = tcpClient.readStringUntil('\r');
-	}
-	Serial.print ("Hour is " + line.substring(8, 10) + " - ");
-	int timeNow = line.substring(8, 10).toInt();
-	if (timeNow <= 7 || timeNow >= 17) {
-		if (switchLights == false) {
-			sendAlarm(true);
-		}
-		switchLights = true;
-		Serial.println("We will switch on the light");
-	} else {
-		if (switchLights == true) {
-			sendAlarm(true);
-		}
-		switchLights = false;
-		Serial.println("We leave the light off");
-	}
-	tcpClient.stop();
-	digitalWrite(comLED, HIGH);
-}
+	// // Read all the lines of the reply from server and print them to Serial
+	// /** String for the return value from the time server */
+	// String line = "";
+	// while (tcpClient.connected()) {
+		// line = tcpClient.readStringUntil('\r');
+	// }
+	// Serial.print ("Hour is " + line.substring(8, 10) + " - ");
+	// int timeNow = line.substring(8, 10).toInt();
+	// if (timeNow <= 7 || timeNow >= 17) {
+		// if (switchLights == false) {
+			// sendAlarm(true);
+		// }
+		// switchLights = true;
+		// Serial.println("We will switch on the light");
+	// } else {
+		// if (switchLights == true) {
+			// sendAlarm(true);
+		// }
+		// switchLights = false;
+		// Serial.println("We leave the light off");
+	// }
+	// tcpClient.stop();
+	// digitalWrite(comLED, HIGH);
+// }
 
 /**
  * Answer request on http server
@@ -528,6 +541,7 @@ void replyClient(WiFiClient httpClient) {
 	// Prepare json object for the response
 	/** Json object for the response to the client */
 	JsonObject& root = jsonBuffer.createObject();
+	root["device"] = DEVICE_ID;
 
 	// Wait until the client sends some data
 	while (!httpClient.available()) {
@@ -566,6 +580,7 @@ void replyClient(WiFiClient httpClient) {
 			alarmOn = true;
 			ledFlasher.attach(1, redLedFlash);
 		}
+		createStatus(root);
 		root.printTo(jsonString);
 		s += jsonString;
 		httpClient.print(s);
